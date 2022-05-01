@@ -1,5 +1,12 @@
 # ****Awesome Task Exchange System (aTES) для UberPopug Inc****
 
+## **Event Storming**
+
+![Архитектура 0 LVL](/arch_lvl-0/README.MD "Архитектура 0 LVL")
+
+![Event Storming](/arch/aTES-EventStorming.png "Event Storming")
+
+
 ## **Контекст к домашней работе**
 
 Это учебный проект. Его цель — не написать лучший в мире таск-трекер, а получить практику, поэтомы мы ограничиваем проблему таким образом, чтобы вышла система, в которой можно проверить идеи из курса.
