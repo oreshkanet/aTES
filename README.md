@@ -8,6 +8,9 @@
 
 ![Event Storming](/arch/aTES-EventStorming.png "Event Storming")
 
+## **Data Model**
+
+![Data Model](/arch/aTES-DataModel.png "Data Model")
 
 ## **Контекст к домашней работе**
 
