@@ -1,0 +1,97 @@
+openapi: 3.0.3
+info:
+  title: aTES
+  description: |
+    <p><a href="/auth">Auth - сервис авторизации</a></p>
+    <p><a href="/task">Task - сервис авторизации</a></p>
+    <p><a href="/billing">Billing - сервис авторизации</a></p>
+    <p><a href="/analytics">Analytics - сервис авторизации</a></p>
+  version: 1.0.0
+servers:
+  - url: "http://localhost:8080"
+tags:
+  - name: "Auth"
+    description: "Авторизация пользователей"
+  - name: "Tasks"
+  - name: "Accounting"
+  - name: "Analytics"
+paths:
+  /auth/sign_up:
+    post:
+      tags:
+        - Auth
+      description: Регистрация пользователя
+      responses:
+        "200":
+          description: Пользователь создан
+        "400":
+          description: Неверный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Внутренняя ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /auth/sign_in:
+    post:
+      tags:
+        - Auth
+      description: Авторизация пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: "Авторизация выполнена"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SignIn"
+        "400":
+          description: Неверный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Внутренняя ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        err:
+          type: boolean
+        err_msg:
+          type: string
+    SignIn:
+      type: object
+      properties:
+        token:
+          type: string
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+          enum:
+            - "admin"
+            - "employee"
+            - "manager"
+            - "buh"
