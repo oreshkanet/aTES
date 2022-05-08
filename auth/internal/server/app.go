@@ -2,14 +2,15 @@ package server
 
 import (
 	"context"
-	"github.com/gin-gonic/gin"
-	"github.com/oreshkanet/aTES/pkg/auth/delivery"
-	"github.com/oreshkanet/aTES/pkg/auth/usecase"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/oreshkanet/aTES/auth/pkg/auth/delivery"
+	"github.com/oreshkanet/aTES/auth/pkg/auth/usecase"
 )
 
 type App struct {

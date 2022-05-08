@@ -1,6 +1,10 @@
 FROM node:16.15-alpine
 
-ADD  ./package.json /ui/package.json
 WORKDIR /ui
+
+COPY  ./package.json ./
 RUN npm i --production
-ADD ./src /ui
+
+COPY ./src ./
+
+CMD [ "node", "./index.js" ]

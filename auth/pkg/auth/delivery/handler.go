@@ -2,10 +2,11 @@ package delivery
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/oreshkanet/aTES/pkg/auth/models"
-	"github.com/oreshkanet/aTES/pkg/auth/usecase"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/oreshkanet/aTES/auth/pkg/auth/models"
+	"github.com/oreshkanet/aTES/auth/pkg/auth/usecase"
 )
 
 type handler struct {

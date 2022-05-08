@@ -1,4 +1,4 @@
-module github.com/oreshkanet/aTES
+module github.com/oreshkanet/aTES/auth
 
 go 1.17
 

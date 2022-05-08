@@ -1,14 +1,15 @@
 package main
 
 import (
-	"github.com/oreshkanet/aTES/internal/server"
 	"log"
+
+	"github.com/oreshkanet/aTES/auth/internal/server"
 )
 
 func main() {
 	app := server.NewApp()
 
-	if err := app.Run("8080"); err != nil {
+	if err := app.Run("8081"); err != nil {
 		log.Fatalf("%s", err.Error())
 	}
 }

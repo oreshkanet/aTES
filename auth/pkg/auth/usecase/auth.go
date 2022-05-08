@@ -4,9 +4,10 @@ import (
 	"context"
 	"crypto/sha1"
 	"fmt"
-	"github.com/dgrijalva/jwt-go/v4"
-	"github.com/oreshkanet/aTES/pkg/auth/models"
 	"time"
+
+	"github.com/dgrijalva/jwt-go/v4"
+	"github.com/oreshkanet/aTES/auth/pkg/auth/models"
 )
 
 type Auth struct {

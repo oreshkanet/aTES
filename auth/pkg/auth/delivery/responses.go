@@ -1,7 +1,7 @@
 package delivery
 
 import (
-	"github.com/oreshkanet/aTES/pkg/auth/models"
+	"github.com/oreshkanet/aTES/auth/pkg/auth/models"
 )
 
 type ErrorResponse struct {
