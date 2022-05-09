@@ -10,7 +10,7 @@ type ErrorResponse struct {
 }
 
 type SignUpResponse struct {
-	user *models.User `json:"user"`
+	User *models.User `json:"user"`
 }
 
 type SignInResponse struct {
