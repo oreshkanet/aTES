@@ -2,16 +2,15 @@ package repository
 
 import (
 	"fmt"
-
 	migrate "github.com/rubenv/sql-migrate"
 )
 
 func (r *UserRepository) MigrateUp() error {
 	migrations := getMigrations()
 
-	_, err := &migrate.Exec(r.db, "mssql", migrations, &migrate.Up)
+	_, err := migrate.Exec(r.db.DB.DB, "mssql", migrations, migrate.Up)
 	if err != nil {
-		return fmt.Errorf("Migrate DB: %w", err)
+		return fmt.Errorf("migrate DB: %w", err)
 	}
 
 	return nil

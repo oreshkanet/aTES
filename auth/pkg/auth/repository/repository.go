@@ -15,8 +15,8 @@ type UserRepository struct {
 func (r *UserRepository) SelectUserByName(ctx context.Context, name string) (models.User, error) {
 	var user models.User
 	query := `
-    SELECT name, password, role FROM users WHERE name = @name
-  `
+	SELECT name, password, role FROM users WHERE name = @name
+	`
 	err := r.db.GetContext(ctx, &user, query, sql.Named("name", name))
 	if err != nil {
 		return models.User{}, err
@@ -43,7 +43,10 @@ func (r *UserRepository) CreateUser(ctx context.Context, user *models.User) erro
 }
 
 func CreateRepository(db *database.DB) *UserRepository {
-	return &UserRepository{
+	repos := &UserRepository{
 		db: db,
 	}
+
+	repos.MigrateUp()
+	return repos
 }
