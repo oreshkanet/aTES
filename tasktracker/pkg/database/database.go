@@ -8,3 +8,8 @@ type DB interface {
 	Update(context.Context, string, interface{}) error
 	Delete(context.Context, string, interface{}) error
 }
+
+type DBParam struct {
+	Name  string
+	Value interface{}
+}
