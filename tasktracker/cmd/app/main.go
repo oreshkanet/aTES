@@ -21,7 +21,7 @@ func main() {
 		config.MsSqlUser, config.MsSqlPwd,
 		config.MsSqlhost, config.MsSqlDb,
 	)
-	db, err := database.NewDB(ctx, dbURL)
+	db, err := database.NewDBMsSQL(ctx, dbURL)
 	if err != nil {
 		log.Fatalf("%s", err.Error())
 		return
