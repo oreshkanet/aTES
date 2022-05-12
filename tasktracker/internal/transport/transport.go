@@ -5,40 +5,24 @@ package transport
 
 import (
 	"context"
-	"github.com/oreshkanet/aTES/tasktracker/pkg/kafka"
+	"github.com/oreshkanet/aTES/tasktracker/internal/services"
+	"github.com/oreshkanet/aTES/tasktracker/pkg/queues"
 )
 
-var TOPIC_USER = "auth.user.cud.0"
-
-type UsersService interface {
-	HandleMessage(message string) error
-}
-
+// Transports содержит все транспорты, используемые в приложении
 type Transports struct {
-	UserTopic *kafka.Consumer
+	Users *UsersTransport
 }
 
-func (t *Transports) Close() {
-	t.UserTopic.Close()
-}
-
-func (t *Transports) UserConsume(ctx context.Context, brokerAddress string, handler UsersService) error {
+// NewTransport создаёт новый экземпляр транспортов, используемых в приложении
+func NewTransport(ctx context.Context, broker queues.Broker, usersService *services.UsersService) (*Transports, error) {
 	var err error
-	t.UserTopic, err = kafka.NewConsumer(ctx, brokerAddress, TOPIC_USER, 0)
-	if err != nil {
-		return err
-	}
-
-	t.UserTopic.ConsumeMessages(handler)
-
-	return nil
-}
-
-func NewTransport(ctx context.Context, brokerAddress string, usersService UsersService) (*Transports, error) {
 	transports := &Transports{}
 
-	if err := transports.UserConsume(ctx, brokerAddress, usersService); err != nil {
+	transports.Users, err = NewUsersTransport(ctx, broker, usersService)
+	if err != nil {
 		return nil, err
 	}
+
 	return transports, nil
 }
