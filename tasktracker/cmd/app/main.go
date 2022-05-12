@@ -7,7 +7,9 @@ import (
 	"github.com/oreshkanet/aTES/tasktracker/internal/services"
 	"github.com/oreshkanet/aTES/tasktracker/internal/transport"
 	"github.com/oreshkanet/aTES/tasktracker/pkg/database"
+	"github.com/oreshkanet/aTES/tasktracker/pkg/queues/kafka"
 	"log"
+	"time"
 )
 
 func main() {
@@ -30,11 +32,15 @@ func main() {
 
 	appServices := services.NewServices()
 
-	appTransport, err := transport.NewTransport(ctx,
+	broker := kafka.NewBrokerKafka(
 		fmt.Sprintf("%s:%s", config.KafkaHost, config.KafkaPort),
-		appServices.Users)
+		10*time.Second,
+		10*time.Second,
+	)
+	defer broker.Close()
+
+	_, err = transport.NewTransport(ctx, broker, appServices.Users)
 	if err != nil {
 		log.Fatalf("start transport: %v", err)
 	}
-	defer appTransport.Close()
 }

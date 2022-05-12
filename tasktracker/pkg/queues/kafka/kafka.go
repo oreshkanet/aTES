@@ -8,6 +8,7 @@ import (
 )
 
 type Broker struct {
+	queues.Broker
 	address      string
 	readTimeout  time.Duration
 	writeTimeout time.Duration
@@ -16,7 +17,7 @@ type Broker struct {
 	consumers []*Consumer
 }
 
-func (b *Broker) Produce(ctx context.Context, topic string) (*Producer, error) {
+func (b *Broker) Produce(ctx context.Context, topic string) (queues.Producer, error) {
 	conn, err := kafka.DialLeader(ctx, "tcp", b.address, topic, 0)
 	if err != nil {
 		return nil, err
@@ -28,7 +29,7 @@ func (b *Broker) Produce(ctx context.Context, topic string) (*Producer, error) {
 	return producer, nil
 }
 
-func (b *Broker) Consume(ctx context.Context, topic string, handler queues.Handler) (*Consumer, error) {
+func (b *Broker) Consume(ctx context.Context, topic string, handler queues.Handler) (queues.Consumer, error) {
 	conn, err := kafka.DialLeader(ctx, "tcp", b.address, topic, 0)
 	if err != nil {
 		return nil, err
@@ -36,12 +37,34 @@ func (b *Broker) Consume(ctx context.Context, topic string, handler queues.Handl
 
 	consumer := &Consumer{conn}
 	b.consumers = append(b.consumers, consumer)
-	consumer.Consume(ctx, handler)
+	if err := consumer.Consume(ctx, handler); err != nil {
+		return nil, err
+	}
 	return consumer, nil
+}
+
+func (b *Broker) Close() {
+	// TODO: обработка ошибок закрытия соединений
+	for _, conn := range b.producers {
+		conn.Close()
+	}
+	for _, conn := range b.consumers {
+		conn.Close()
+	}
 }
 
 type Producer struct {
 	*kafka.Conn
+}
+
+func (p *Producer) Publish(message []byte) error {
+	_, err := p.WriteMessages(kafka.Message{
+		Value: message,
+	})
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 type Consumer struct {
@@ -70,20 +93,10 @@ func (c *Consumer) Consume(ctx context.Context, handler queues.Handler) error {
 	return nil
 }
 
-func (p *Producer) Publish(message []byte) error {
-	_, err := p.WriteMessages(kafka.Message{
-		Value: message,
-	})
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func NewBroker(address string) *Broker {
+func NewBrokerKafka(address string, readTimeout time.Duration, writeTimeout time.Duration) *Broker {
 	return &Broker{
 		address:      address,
-		readTimeout:  10 * time.Second,
-		writeTimeout: 10 * time.Second,
+		readTimeout:  readTimeout,
+		writeTimeout: writeTimeout,
 	}
 }

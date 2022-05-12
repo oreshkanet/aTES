@@ -15,10 +15,10 @@ type HandlerUserMessage interface {
 
 // UserMessage - структура сообщений стриминга пользователей
 type UserMessage struct {
-	operation string `json:"operation"`
-	id        string `json:"id"`
-	name      string `json:"name"`
-	role      string `json:"role"`
+	Operation string `json:"operation"`
+	Id        string `json:"id"`
+	Name      string `json:"name"`
+	Role      string `json:"role"`
 }
 
 // UsersTransport - реализация транспорта стриминга данных пользователей
@@ -41,7 +41,7 @@ func NewUsersTransport(ctx context.Context, broker queues.Broker, handler Handle
 		handler: handler,
 	}
 
-	err := broker.Consume(ctx, TopicUser, transport)
+	_, err := broker.Consume(ctx, TopicUser, transport)
 	if err != nil {
 		return nil, err
 	}
