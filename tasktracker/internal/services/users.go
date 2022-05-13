@@ -1,6 +1,8 @@
 package services
 
 import (
+	"context"
+	"github.com/oreshkanet/aTES/tasktracker/internal/models"
 	"github.com/oreshkanet/aTES/tasktracker/internal/repository"
 	"github.com/oreshkanet/aTES/tasktracker/internal/transport"
 )
@@ -10,13 +12,23 @@ type UsersService struct {
 }
 
 func (s *UsersService) HandleUserMessage(message *transport.UserMessage) error {
-	//ctx := context.Background()
+	ctx := context.Background()
+	var err error
+
+	user := &models.User{
+		PublicId: message.PublicId,
+		Name:     message.Name,
+		Role:     message.Role,
+	}
+
 	switch message.Operation {
 	case "C":
-		// TODO: Добавление пользователя в систему
+		// Операция создания (обновление) пользователя в системе
+		err = s.repos.CreateOrUpdateUser(ctx, user)
 		break
 	case "U":
-		// TODO: Обновление пользователя в системе
+		// Обновление пользователя в системе
+		err = s.repos.CreateOrUpdateUser(ctx, user)
 		break
 	case "D":
 		// TODO: Удаление пользователя из системы
@@ -24,6 +36,6 @@ func (s *UsersService) HandleUserMessage(message *transport.UserMessage) error {
 	default:
 		// TODO: Неизвестная операция
 	}
-	// TODO: Обработка сообщений из кафки
-	return nil
+
+	return err
 }

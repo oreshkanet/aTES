@@ -16,7 +16,7 @@ type HandlerUserMessage interface {
 // UserMessage - структура сообщений стриминга пользователей
 type UserMessage struct {
 	Operation string `json:"operation"`
-	Id        string `json:"id"`
+	PublicId  string `json:"public_id"`
 	Name      string `json:"name"`
 	Role      string `json:"role"`
 }
