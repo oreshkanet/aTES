@@ -2,7 +2,9 @@ package database
 
 import (
 	"context"
+	"fmt"
 	"github.com/jmoiron/sqlx"
+	migrate "github.com/rubenv/sql-migrate"
 )
 
 type mssql struct {
@@ -40,5 +42,14 @@ func (d *mssql) Delete(ctx context.Context, query string, arg interface{}) error
 	if _, err := d.NamedExecContext(ctx, query, arg); err != nil {
 		return err
 	}
+	return nil
+}
+
+func (d *mssql) MigrateUp(migrations *migrate.MemoryMigrationSource) error {
+	_, err := migrate.Exec(d.DB.DB, "mssql", migrations, migrate.Up)
+	if err != nil {
+		return fmt.Errorf("migrate DB: %w", err)
+	}
+
 	return nil
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/oreshkanet/aTES/tasktracker/internal/configs"
+	"github.com/oreshkanet/aTES/tasktracker/internal/repository"
 	"github.com/oreshkanet/aTES/tasktracker/internal/services"
 	"github.com/oreshkanet/aTES/tasktracker/internal/transport"
 	"github.com/oreshkanet/aTES/tasktracker/pkg/database"
@@ -30,7 +31,13 @@ func main() {
 	}
 	defer db.Close()
 
-	appServices := services.NewServices()
+	appRepos, err := repository.NewRepository(db)
+	if err != nil {
+		log.Fatalf("Create repository:%s", err)
+		return
+	}
+
+	appServices := services.NewServices(appRepos)
 
 	broker := kafka.NewBrokerKafka(
 		fmt.Sprintf("%s:%s", config.KafkaHost, config.KafkaPort),

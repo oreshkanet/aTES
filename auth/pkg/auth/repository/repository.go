@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	migrate "github.com/rubenv/sql-migrate"
 
 	"github.com/oreshkanet/aTES/auth/pkg/auth/models"
 	"github.com/oreshkanet/aTES/auth/pkg/database"
@@ -10,6 +11,18 @@ import (
 
 type UserRepository struct {
 	db *database.DB
+}
+
+func (r *UserRepository) getMigrations() *migrate.MemoryMigrationSource {
+	return &migrate.MemoryMigrationSource{
+		Migrations: []*migrate.Migration{
+			&migrate.Migration{
+				Id:   "1",
+				Up:   []string{"CREATE TABLE [users] ([public_id] varchar(40), [name] varchar(250), [role] varchar(50))"},
+				Down: []string{"DROP TABLE [users]"},
+			},
+		},
+	}
 }
 
 func (r *UserRepository) SelectUserByName(ctx context.Context, name string) (models.User, error) {

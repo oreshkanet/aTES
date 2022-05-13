@@ -4,13 +4,26 @@ import (
 	"context"
 	"github.com/oreshkanet/aTES/tasktracker/internal/models"
 	"github.com/oreshkanet/aTES/tasktracker/pkg/database"
+	migrate "github.com/rubenv/sql-migrate"
 )
 
-type UserRepository struct {
+type UsersRepository struct {
 	db database.DB
 }
 
-func (r *UserRepository) FindUserByPublicId(ctx context.Context, userID string) (*models.User, error) {
+func (r *UsersRepository) getMigrations() *migrate.MemoryMigrationSource {
+	return &migrate.MemoryMigrationSource{
+		Migrations: []*migrate.Migration{
+			&migrate.Migration{
+				Id:   "1",
+				Up:   []string{"CREATE TABLE [users] ([public_id] varchar(40), [name] varchar(250), [role] varchar(50))"},
+				Down: []string{"DROP TABLE [users]"},
+			},
+		},
+	}
+}
+
+func (r *UsersRepository) FindUserByPublicId(ctx context.Context, userID string) (*models.User, error) {
 	user := &models.User{}
 	query := `
 		SELECT [id], [public_id], [name], [role] FROM [users] WHERE [public_id] = @PublicId
@@ -23,7 +36,7 @@ func (r *UserRepository) FindUserByPublicId(ctx context.Context, userID string) 
 	return user, nil
 }
 
-func (r *UserRepository) CreateOrUpdateUser(ctx context.Context, user *models.User) error {
+func (r *UsersRepository) CreateOrUpdateUser(ctx context.Context, user *models.User) error {
 	query := `
 	IF EXISTS (SELECT [id] FROM [users] WHERE [public_id] = @PublicId)
 		BEGIN
@@ -47,4 +60,15 @@ func (r *UserRepository) CreateOrUpdateUser(ctx context.Context, user *models.Us
 	}
 
 	return nil
+}
+
+func NewUsersRepository(db database.DB) (*UsersRepository, error) {
+	repos := &UsersRepository{
+		db: db,
+	}
+
+	if err := db.MigrateUp(repos.getMigrations()); err != nil {
+		return nil, err
+	}
+	return repos, nil
 }
