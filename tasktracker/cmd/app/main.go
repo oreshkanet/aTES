@@ -7,8 +7,8 @@ import (
 	"github.com/oreshkanet/aTES/tasktracker/internal/repository"
 	"github.com/oreshkanet/aTES/tasktracker/internal/services"
 	"github.com/oreshkanet/aTES/tasktracker/internal/transport"
+	"github.com/oreshkanet/aTES/tasktracker/internal/transport/kafka"
 	"github.com/oreshkanet/aTES/tasktracker/pkg/database"
-	"github.com/oreshkanet/aTES/tasktracker/pkg/queues/kafka"
 	"log"
 	"time"
 )
@@ -22,7 +22,7 @@ func main() {
 	dbURL := fmt.Sprintf(
 		"sqlserver://%s:%s@%s?database=%s",
 		config.MsSqlUser, config.MsSqlPwd,
-		config.MsSqlhost, config.MsSqlDb,
+		config.MsSqlHost, config.MsSqlDb,
 	)
 	db, err := database.NewDBMsSQL(ctx, dbURL)
 	if err != nil {

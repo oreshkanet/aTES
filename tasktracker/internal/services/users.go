@@ -2,40 +2,27 @@ package services
 
 import (
 	"context"
-	"github.com/oreshkanet/aTES/tasktracker/internal/models"
-	"github.com/oreshkanet/aTES/tasktracker/internal/repository"
-	"github.com/oreshkanet/aTES/tasktracker/internal/transport"
+	"github.com/oreshkanet/aTES/tasktracker/internal/domain"
 )
 
-type UsersService struct {
-	repos *repository.UserRepository
+type UsersRepository interface {
+	CreateOrUpdateUser(ctx context.Context, user *domain.User) error
 }
 
-func (s *UsersService) HandleUserMessage(message *transport.UserMessage) error {
-	ctx := context.Background()
-	var err error
+type Users struct {
+	repos UsersRepository
+}
 
-	user := &models.User{
-		PublicId: message.PublicId,
-		Name:     message.Name,
-		Role:     message.Role,
+func NewUsers(repos UsersRepository) *Users {
+	return &Users{
+		repos: repos,
 	}
+}
 
-	switch message.Operation {
-	case "C":
-		// Операция создания (обновление) пользователя в системе
-		err = s.repos.CreateOrUpdateUser(ctx, user)
-		break
-	case "U":
-		// Обновление пользователя в системе
-		err = s.repos.CreateOrUpdateUser(ctx, user)
-		break
-	case "D":
-		// TODO: Удаление пользователя из системы
-		break
-	default:
-		// TODO: Неизвестная операция
-	}
+func (s *Users) CreateUser(ctx context.Context, user *domain.User) error {
+	return s.repos.CreateOrUpdateUser(ctx, user)
+}
 
-	return err
+func (s *Users) UpdateUser(ctx context.Context, user *domain.User) error {
+	return s.repos.CreateOrUpdateUser(ctx, user)
 }

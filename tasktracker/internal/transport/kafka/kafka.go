@@ -2,13 +2,13 @@ package kafka
 
 import (
 	"context"
-	"github.com/oreshkanet/aTES/tasktracker/pkg/queues"
+	"github.com/oreshkanet/aTES/tasktracker/internal/transport"
 	"github.com/segmentio/kafka-go"
 	"time"
 )
 
 type Broker struct {
-	queues.Broker
+	transport.MessageBroker
 	address      string
 	readTimeout  time.Duration
 	writeTimeout time.Duration
@@ -17,7 +17,7 @@ type Broker struct {
 	consumers []*Consumer
 }
 
-func (b *Broker) Produce(ctx context.Context, topic string) (queues.Producer, error) {
+func (b *Broker) Produce(ctx context.Context, topic string) (transport.Producer, error) {
 	conn, err := kafka.DialLeader(ctx, "tcp", b.address, topic, 0)
 	if err != nil {
 		return nil, err
@@ -29,7 +29,7 @@ func (b *Broker) Produce(ctx context.Context, topic string) (queues.Producer, er
 	return producer, nil
 }
 
-func (b *Broker) Consume(ctx context.Context, topic string, handler queues.Handler) (queues.Consumer, error) {
+func (b *Broker) Consume(ctx context.Context, topic string, messageCh chan<- []byte) (transport.Consumer, error) {
 	conn, err := kafka.DialLeader(ctx, "tcp", b.address, topic, 0)
 	if err != nil {
 		return nil, err
@@ -37,7 +37,7 @@ func (b *Broker) Consume(ctx context.Context, topic string, handler queues.Handl
 
 	consumer := &Consumer{conn}
 	b.consumers = append(b.consumers, consumer)
-	if err := consumer.Consume(ctx, handler); err != nil {
+	if err := consumer.Consume(ctx, messageCh); err != nil {
 		return nil, err
 	}
 	return consumer, nil
@@ -71,25 +71,24 @@ type Consumer struct {
 	*kafka.Conn
 }
 
-func (c *Consumer) Consume(ctx context.Context, handler queues.Handler) error {
-	batch := c.ReadBatch(10e3, 1e6) // fetch 10KB min, 1MB max
-
-	go func(ctx context.Context, handler queues.Handler) {
-		b := make([]byte, 10e3) // 10KB max per message
+func (c *Consumer) Consume(ctx context.Context, messageCh chan<- []byte) error {
+	go func(ctx context.Context, messageCh chan<- []byte) {
+		batch := c.ReadBatch(10e3, 1e6) // fetch 10KB min, 1MB max
+		b := make([]byte, 10e3)         // 10KB max per message
 		for {
-			n, err := batch.Read(b)
-			if err != nil {
-				break
-			}
-			if err := handler.HandleMessage(b[:n]); err != nil {
-				// TODO: при ошибке обработки сообщений пропускаем его и пишем лог
+			select {
+			case <-ctx.Done():
+				batch.Close()
+				return
+			default:
+				n, err := batch.Read(b)
+				if err != nil {
+					break
+				}
+				messageCh <- b[:n]
 			}
 		}
-
-		if err := batch.Close(); err != nil {
-			// TODO:
-		}
-	}(ctx, handler)
+	}(ctx, messageCh)
 	return nil
 }
 

@@ -8,7 +8,7 @@ type Configs struct {
 	Port       string
 	SigningKey string
 
-	MsSqlhost string
+	MsSqlHost string
 	MsSqlDb   string
 	MsSqlUser string
 	MsSqlPwd  string
@@ -22,7 +22,7 @@ func Load() *Configs {
 		Port:       os.Getenv("PORT"),
 		SigningKey: os.Getenv("SIGNING_KEY"),
 
-		MsSqlhost: os.Getenv("MSSQL_HOST"),
+		MsSqlHost: os.Getenv("MSSQL_HOST"),
 		MsSqlDb:   os.Getenv("MSSQL_DB"),
 		MsSqlUser: os.Getenv("MSSQL_USER"),
 		MsSqlPwd:  os.Getenv("MSSQL_PWD"),

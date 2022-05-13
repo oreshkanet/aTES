@@ -3,6 +3,7 @@ module github.com/oreshkanet/aTES/tasktracker
 go 1.18
 
 require (
+	github.com/google/uuid v1.3.0
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/rubenv/sql-migrate v1.1.1
 	github.com/segmentio/kafka-go v0.4.31
