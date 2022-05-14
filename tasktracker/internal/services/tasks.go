@@ -10,13 +10,19 @@ type TasksRepository interface {
 	//FindByPublicId(ctx context.Context, publicId string) (*domain.Task, error)
 }
 
+type TasksEventsClient interface {
+	TaskAdded(ctx context.Context, message *domain.TaskAddMessage) error
+}
+
 type Tasks struct {
+	events     TasksEventsClient
 	reposUsers UsersRepository
 	reposTasks TasksRepository
 }
 
-func NewTasks(reposUsers UsersRepository, reposTasks TasksRepository) *Tasks {
+func NewTasks(events TasksEventsClient, reposUsers UsersRepository, reposTasks TasksRepository) *Tasks {
 	return &Tasks{
+		events:     events,
 		reposUsers: reposUsers,
 		reposTasks: reposTasks,
 	}
@@ -29,9 +35,26 @@ func (s *Tasks) AddTask(ctx context.Context, title string, description string) (
 		Description: description,
 	}
 
+	var err error
+
 	// TODO: Добавление в базу новой задачи и получения её внутреннего ID
 	// TODO: Ассайн задачи на пользователя
-	// TODO: Публикация события добавления задачи в систему "tasks.added"
+	// TODO: Публикация события добавления задачи в систему "tasks.added" для расчёта её стоимости
+	// TODO: Публикация стрим-сообщения
+	err = s.events.TaskAdded(ctx, &domain.TaskAddMessage{
+		PublicId: task.PublicId,
+	})
+	/*
+		err = s.events.TaskStream(ctx, &domain.TaskStreamMessage{
+			Operation:   "C",
+			PublicId:    task.PublicId,
+			Title:       task.Title,
+			Description: task.Description,
+		})
+	*/
+	if err != nil {
+		return nil, err
+	}
 
 	return task, nil
 }

@@ -1,4 +1,4 @@
-// services - Имплементация бизнес-логики приложения
+// Package services services - Имплементация бизнес-логики приложения
 package services
 
 import (
@@ -23,13 +23,14 @@ type Services struct {
 }
 
 type ConfigService struct {
-	ReposUsers UsersRepository
-	ReposTasks TasksRepository
+	TasksEvents TasksEventsClient
+	ReposUsers  UsersRepository
+	ReposTasks  TasksRepository
 }
 
 func NewServices(config *ConfigService) *Services {
 	return &Services{
 		Users: NewUsers(config.ReposUsers),
-		Tasks: NewTasks(config.ReposUsers, config.ReposTasks),
+		Tasks: NewTasks(config.TasksEvents, config.ReposUsers, config.ReposTasks),
 	}
 }

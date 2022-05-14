@@ -18,7 +18,6 @@ func NewApp() *App {
 }
 
 func (a *App) Run(ctx context.Context, db database.DB, messageBroker transport.MessageBroker) {
-
 	// Создаём репозитории приложения
 	appRepos, err := repository.NewRepository(db)
 	if err != nil {
@@ -26,15 +25,24 @@ func (a *App) Run(ctx context.Context, db database.DB, messageBroker transport.M
 		return
 	}
 
+	// Создаём клиент для публикации нужных событий в брокера сообщений
+	appEventsClient := events.NewClient(messageBroker)
+
 	// Создаём сервисы приложения, выполняющие бизнес-логику
-	appServices := services.NewServices(appRepos)
+	appServices := services.NewServices(&services.ConfigService{
+		TasksEvents: appEventsClient,
+		ReposUsers:  appRepos.Users,
+		ReposTasks:  appRepos.Tasks,
+	})
 
 	// Создаём консьюминг нужных событий из брокера сообщений
-	appEvents := events.NewHandler(appServices.Users)
-	err = appEvents.Init(ctx, messageBroker)
+	appEventsHandler := events.NewHandler(appServices.Users)
+
+	// Запускаем консьюминг и паблишинг
+	appEventsClient.Init(ctx)
+	err = appEventsHandler.Init(ctx, messageBroker)
 	if err != nil {
 		log.Fatalf("Create events:%s", err)
 		return
 	}
-
 }
