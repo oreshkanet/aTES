@@ -2,12 +2,14 @@ package app
 
 import (
 	"context"
+	"github.com/oreshkanet/aTES/tasktracker/internal/delivery/api"
 	"github.com/oreshkanet/aTES/tasktracker/internal/delivery/events"
 	"github.com/oreshkanet/aTES/tasktracker/internal/repository"
 	"github.com/oreshkanet/aTES/tasktracker/internal/services"
 	"github.com/oreshkanet/aTES/tasktracker/internal/transport/mq"
 	"github.com/oreshkanet/aTES/tasktracker/pkg/database"
 	"log"
+	"net/http"
 )
 
 type App struct {
@@ -17,7 +19,7 @@ func NewApp() *App {
 	return &App{}
 }
 
-func (a *App) Run(ctx context.Context, db database.DB, messageBroker mq.MessageBroker) {
+func (a *App) Run(ctx context.Context, db database.DB, messageBroker mq.MessageBroker, httpSrv *http.Server) {
 	// Создаём репозитории приложения
 	appRepos, err := repository.NewRepository(db)
 	if err != nil {
@@ -45,4 +47,12 @@ func (a *App) Run(ctx context.Context, db database.DB, messageBroker mq.MessageB
 		log.Fatalf("Create events:%s", err)
 		return
 	}
+
+	// Запускаем API
+	appAPI := api.NewApi(httpSrv, appServices.Tasks)
+	go func() {
+		if err := appAPI.Run(); err != nil {
+			log.Fatalf("Failed to start API: %+v", err)
+		}
+	}()
 }

@@ -4,17 +4,18 @@ import (
 	"context"
 	"fmt"
 	"github.com/oreshkanet/aTES/tasktracker/internal/app"
-	"github.com/oreshkanet/aTES/tasktracker/internal/configs"
+	"github.com/oreshkanet/aTES/tasktracker/internal/config"
 	"github.com/oreshkanet/aTES/tasktracker/internal/transport/mq/kafka"
 	"github.com/oreshkanet/aTES/tasktracker/pkg/database"
 	"log"
+	"net/http"
 	"time"
 )
 
 func main() {
 	ctx := context.Background()
 
-	config := configs.Load()
+	config := config.Load()
 
 	// Создаём подключение к БД
 	dbURL := fmt.Sprintf(
@@ -37,6 +38,12 @@ func main() {
 	)
 	defer mb.Close()
 
+	httpSrv := &http.Server{
+		Addr:         ":" + config.Port,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
+
 	application := app.NewApp()
-	application.Run(ctx, db, mb)
+	application.Run(ctx, db, mb, httpSrv)
 }
