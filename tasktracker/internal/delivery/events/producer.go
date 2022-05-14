@@ -3,17 +3,17 @@ package events
 import (
 	"context"
 	"github.com/oreshkanet/aTES/tasktracker/internal/domain"
-	"github.com/oreshkanet/aTES/tasktracker/internal/transport"
+	"github.com/oreshkanet/aTES/tasktracker/internal/transport/mq"
 )
 
 type Producer struct {
-	broker transport.MessageBroker
+	broker mq.MessageBroker
 
 	taskStreamCh chan []byte
 	taskAddedCh  chan []byte
 }
 
-func NewProducer(broker transport.MessageBroker) *Producer {
+func NewProducer(broker mq.MessageBroker) *Producer {
 	client := &Producer{
 		broker:       broker,
 		taskStreamCh: make(chan []byte),

@@ -5,7 +5,7 @@ import (
 	"github.com/oreshkanet/aTES/tasktracker/internal/delivery/events"
 	"github.com/oreshkanet/aTES/tasktracker/internal/repository"
 	"github.com/oreshkanet/aTES/tasktracker/internal/services"
-	"github.com/oreshkanet/aTES/tasktracker/internal/transport"
+	"github.com/oreshkanet/aTES/tasktracker/internal/transport/mq"
 	"github.com/oreshkanet/aTES/tasktracker/pkg/database"
 	"log"
 )
@@ -17,7 +17,7 @@ func NewApp() *App {
 	return &App{}
 }
 
-func (a *App) Run(ctx context.Context, db database.DB, messageBroker transport.MessageBroker) {
+func (a *App) Run(ctx context.Context, db database.DB, messageBroker mq.MessageBroker) {
 	// Создаём репозитории приложения
 	appRepos, err := repository.NewRepository(db)
 	if err != nil {

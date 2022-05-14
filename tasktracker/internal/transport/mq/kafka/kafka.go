@@ -2,13 +2,13 @@ package kafka
 
 import (
 	"context"
-	"github.com/oreshkanet/aTES/tasktracker/internal/transport"
+	"github.com/oreshkanet/aTES/tasktracker/internal/transport/mq"
 	"github.com/segmentio/kafka-go"
 	"time"
 )
 
 type Broker struct {
-	transport.MessageBroker
+	mq.MessageBroker
 	address      string
 	readTimeout  time.Duration
 	writeTimeout time.Duration

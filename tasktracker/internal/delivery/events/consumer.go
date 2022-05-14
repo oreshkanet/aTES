@@ -4,11 +4,11 @@ import (
 	"context"
 	"github.com/oreshkanet/aTES/tasktracker/internal/domain"
 	"github.com/oreshkanet/aTES/tasktracker/internal/services"
-	"github.com/oreshkanet/aTES/tasktracker/internal/transport"
+	"github.com/oreshkanet/aTES/tasktracker/internal/transport/mq"
 )
 
 type Consumer struct {
-	broker transport.MessageBroker
+	broker mq.MessageBroker
 
 	usersService services.UsersService
 }
@@ -21,7 +21,7 @@ func NewConsumer(usersService services.UsersService) *Consumer {
 	return handler
 }
 
-func (c *Consumer) Init(ctx context.Context, broker transport.MessageBroker) error {
+func (c *Consumer) Init(ctx context.Context, broker mq.MessageBroker) error {
 	// TODO: запускаем косьюминг топиков
 	msgCh := make(chan []byte)
 	go broker.Consume(ctx, domain.UserStreamTopic, msgCh)

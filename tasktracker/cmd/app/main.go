@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/oreshkanet/aTES/tasktracker/internal/app"
 	"github.com/oreshkanet/aTES/tasktracker/internal/configs"
-	"github.com/oreshkanet/aTES/tasktracker/internal/transport/kafka"
+	"github.com/oreshkanet/aTES/tasktracker/internal/transport/mq/kafka"
 	"github.com/oreshkanet/aTES/tasktracker/pkg/database"
 	"log"
 	"time"
