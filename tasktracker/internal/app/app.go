@@ -26,21 +26,21 @@ func (a *App) Run(ctx context.Context, db database.DB, messageBroker transport.M
 	}
 
 	// Создаём клиент для публикации нужных событий в брокера сообщений
-	appEventsClient := events.NewClient(messageBroker)
+	appEventsProducer := events.NewProducer(messageBroker)
 
 	// Создаём сервисы приложения, выполняющие бизнес-логику
 	appServices := services.NewServices(&services.ConfigService{
-		TasksEvents: appEventsClient,
-		ReposUsers:  appRepos.Users,
-		ReposTasks:  appRepos.Tasks,
+		TasksEventsProducer: appEventsProducer,
+		ReposUsers:          appRepos.Users,
+		ReposTasks:          appRepos.Tasks,
 	})
 
 	// Создаём консьюминг нужных событий из брокера сообщений
-	appEventsHandler := events.NewHandler(appServices.Users)
+	appEventsConsumer := events.NewConsumer(appServices.Users)
 
 	// Запускаем консьюминг и паблишинг
-	appEventsClient.Init(ctx)
-	err = appEventsHandler.Init(ctx, messageBroker)
+	appEventsConsumer.Init(ctx)
+	err = appEventsConsumer.Init(ctx, messageBroker)
 	if err != nil {
 		log.Fatalf("Create events:%s", err)
 		return
