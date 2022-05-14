@@ -11,6 +11,17 @@ type UsersRepository struct {
 	db database.DB
 }
 
+func NewUsersRepository(db database.DB) (*UsersRepository, error) {
+	repos := &UsersRepository{
+		db: db,
+	}
+
+	if err := db.MigrateUp(repos.getMigrations()); err != nil {
+		return nil, err
+	}
+	return repos, nil
+}
+
 func (r *UsersRepository) getMigrations() *migrate.MemoryMigrationSource {
 	// FIXME: пофиксить создание автоинкрементного primary key, а ещё и уникальный индекс
 	return &migrate.MemoryMigrationSource{
@@ -61,15 +72,4 @@ func (r *UsersRepository) CreateOrUpdateUser(ctx context.Context, user *domain.U
 	}
 
 	return nil
-}
-
-func NewUsersRepository(db database.DB) (*UsersRepository, error) {
-	repos := &UsersRepository{
-		db: db,
-	}
-
-	if err := db.MigrateUp(repos.getMigrations()); err != nil {
-		return nil, err
-	}
-	return repos, nil
 }

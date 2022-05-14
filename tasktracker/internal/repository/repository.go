@@ -4,6 +4,7 @@ import "github.com/oreshkanet/aTES/tasktracker/pkg/database"
 
 type Repository struct {
 	Users *UsersRepository
+	Tasks *TasksRepository
 }
 
 func NewRepository(db database.DB) (*Repository, error) {
@@ -13,8 +14,14 @@ func NewRepository(db database.DB) (*Repository, error) {
 		return nil, err
 	}
 
+	reposTasks, err := NewTasksRepository(db)
+	if err != nil {
+		return nil, err
+	}
+
 	repos := &Repository{
 		Users: reposUser,
+		Tasks: reposTasks,
 	}
 
 	return repos, nil

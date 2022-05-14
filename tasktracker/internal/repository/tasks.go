@@ -11,6 +11,17 @@ type TasksRepository struct {
 	db database.DB
 }
 
+func NewTasksRepository(db database.DB) (*TasksRepository, error) {
+	repos := &TasksRepository{
+		db: db,
+	}
+
+	if err := db.MigrateUp(repos.getMigrations()); err != nil {
+		return nil, err
+	}
+	return repos, nil
+}
+
 func (r *TasksRepository) getMigrations() *migrate.MemoryMigrationSource {
 	// FIXME: пофиксить создание автоинкрементного primary key, а ещё и уникальный индекс
 	return &migrate.MemoryMigrationSource{
