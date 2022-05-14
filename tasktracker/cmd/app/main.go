@@ -3,10 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/oreshkanet/aTES/tasktracker/internal/app"
 	"github.com/oreshkanet/aTES/tasktracker/internal/configs"
-	"github.com/oreshkanet/aTES/tasktracker/internal/repository"
-	"github.com/oreshkanet/aTES/tasktracker/internal/services"
-	"github.com/oreshkanet/aTES/tasktracker/internal/transport"
 	"github.com/oreshkanet/aTES/tasktracker/internal/transport/kafka"
 	"github.com/oreshkanet/aTES/tasktracker/pkg/database"
 	"log"
@@ -14,9 +12,9 @@ import (
 )
 
 func main() {
-	config := configs.Load()
-
 	ctx := context.Background()
+
+	config := configs.Load()
 
 	// Создаём подключение к БД
 	dbURL := fmt.Sprintf(
@@ -31,23 +29,14 @@ func main() {
 	}
 	defer db.Close()
 
-	appRepos, err := repository.NewRepository(db)
-	if err != nil {
-		log.Fatalf("Create repository:%s", err)
-		return
-	}
-
-	appServices := services.NewServices(appRepos)
-
-	broker := kafka.NewBrokerKafka(
+	// Создаём подключение к брокеру сообщений Kafka
+	mb := kafka.NewBrokerKafka(
 		fmt.Sprintf("%s:%s", config.KafkaHost, config.KafkaPort),
 		10*time.Second,
 		10*time.Second,
 	)
-	defer broker.Close()
+	defer mb.Close()
 
-	_, err = transport.NewTransport(ctx, broker, appServices.Users)
-	if err != nil {
-		log.Fatalf("start transport: %v", err)
-	}
+	application := app.NewApp()
+	application.Run(ctx, db, mb)
 }

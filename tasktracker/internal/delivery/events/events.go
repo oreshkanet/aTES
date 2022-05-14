@@ -2,6 +2,7 @@ package events
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/oreshkanet/aTES/tasktracker/internal/domain"
 	"github.com/oreshkanet/aTES/tasktracker/internal/services"
 	"github.com/oreshkanet/aTES/tasktracker/internal/transport"
@@ -10,39 +11,47 @@ import (
 type Handler struct {
 	broker transport.MessageBroker
 
-	userService *services.Users
+	usersService services.UsersService
 }
 
-func newHandler(userService *services.Users) *Handler {
+func NewHandler(usersService services.UsersService) *Handler {
 	handler := &Handler{
-		userService: userService,
+		usersService: usersService,
 	}
 
 	return handler
 }
 
-func (s *Handler) Init(ctx context.Context, broker transport.MessageBroker) error {
+func (h *Handler) Init(ctx context.Context, broker transport.MessageBroker) error {
 	// TODO: запускаем косьюминг топиков
-	msgCh := make(chan<- []byte)
-	broker.Consume(ctx, domain.UserStreamTopic, msgCh)
-	go func(msgCh chan<- []byte) {
-		for msg := range msgCh {
-			s.HandleUserStream(msg)
-		}
-	}(msgCh)
+	msgCh := make(chan []byte)
+	go broker.Consume(ctx, domain.UserStreamTopic, msgCh)
+	go h.Handle(ctx, msgCh, h.HandleUserStream)
 
+	return nil
 }
 
-func (s *Handler) HandleUserStream(message []byte) error {
-	/*
-		userMessage := &UserMessage{}
-		if err := json.Unmarshal(message, userMessage); err != nil {
-			return err
+func (h *Handler) Handle(ctx context.Context, msgCh <-chan []byte, handleMessages func(rawMessage []byte) error) {
+	for {
+		select {
+		case <-ctx.Done():
+			break
+		case msg := <-msgCh:
+			if err := handleMessages(msg); err != nil {
+				// TODO: пропускать такое сообщение или пытатьсяобрабатывать снова?
+				break
+			}
 		}
-	*/
+	}
+}
 
-	ctx := context.Background()
+func (h *Handler) HandleUserStream(rawMessage []byte) error {
 	var err error
+
+	message := &domain.UserStreamMessage{}
+	if err := json.Unmarshal(rawMessage, message); err != nil {
+		return err
+	}
 
 	user := &domain.User{
 		PublicId: message.PublicId,
@@ -50,14 +59,15 @@ func (s *Handler) HandleUserStream(message []byte) error {
 		Role:     message.Role,
 	}
 
+	ctx := context.Background()
 	switch message.Operation {
 	case "C":
 		// Операция создания (обновление) пользователя в системе
-		err = s.userService.CreateUser(ctx, user)
+		err = h.usersService.CreateUser(ctx, user)
 		break
 	case "U":
 		// Обновление пользователя в системе
-		err = s.userService.UpdateUser(ctx, user)
+		err = h.usersService.UpdateUser(ctx, user)
 		break
 	case "D":
 		// TODO: Удаление пользователя из системы
