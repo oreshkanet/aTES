@@ -3,20 +3,28 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/oreshkanet/aTES/tasktracker/internal/services"
+	"github.com/oreshkanet/aTES/tasktracker/pkg/authorizer"
 	"net/http"
 )
 
 type Api struct {
-	srv *http.Server
-
+	srv     *http.Server
+	auth    authorizer.AuthToken
 	handler *Handler
 }
 
-func NewApi(srv *http.Server, taskService services.TasksService) *Api {
+type Config struct {
+	Srv         *http.Server
+	Auth        authorizer.AuthToken
+	TaskService services.TasksService
+}
+
+func NewApi(config *Config) *Api {
 	return &Api{
-		srv: srv,
+		srv:  config.Srv,
+		auth: config.Auth,
 		handler: &Handler{
-			taskService: taskService,
+			taskService: config.TaskService,
 		},
 	}
 }
@@ -27,6 +35,7 @@ func (a *Api) Run() error {
 	router.Use(
 		gin.Recovery(),
 		gin.Logger(),
+		a.AuthMiddleware(),
 	)
 	a.srv.Handler = router
 

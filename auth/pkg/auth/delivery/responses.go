@@ -14,7 +14,7 @@ type SignUpResponse struct {
 }
 
 type SignInResponse struct {
-	Token string `json:"token,omitempty"`
+	Token string `json:"authorizer,omitempty"`
 }
 
 func newSignInResponse(token string) *SignInResponse {
