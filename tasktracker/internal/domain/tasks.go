@@ -1,6 +1,7 @@
 package domain
 
 var TaskStreamTopic = "tasks.task.stream.0"
+var TaskAddedTopic = "tasks.task.added.0"
 
 type Task struct {
 	Id           int    `db:"public_id"`
@@ -17,11 +18,11 @@ type TaskStreamMessage struct {
 	Description string `json:"description"`
 }
 
-type TaskAddMessage struct {
+type TaskAddedMessage struct {
 	PublicId string `json:"public_id"`
 }
 
-type TaskAssignMessage struct {
+type TaskAssignedMessage struct {
 	PublicId             string `json:"public_id"`
 	AssignedUserPublicId string `json:"assigned_user_public_id"`
 }

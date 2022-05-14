@@ -23,14 +23,14 @@ type Services struct {
 }
 
 type ConfigService struct {
-	TasksEvents TasksEventsClient
-	ReposUsers  UsersRepository
-	ReposTasks  TasksRepository
+	TasksEventsProducer TasksEventsProducer
+	ReposUsers          UsersRepository
+	ReposTasks          TasksRepository
 }
 
 func NewServices(config *ConfigService) *Services {
 	return &Services{
 		Users: NewUsers(config.ReposUsers),
-		Tasks: NewTasks(config.TasksEvents, config.ReposUsers, config.ReposTasks),
+		Tasks: NewTasks(config.TasksEventsProducer, config.ReposUsers, config.ReposTasks),
 	}
 }

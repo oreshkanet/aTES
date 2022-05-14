@@ -6,7 +6,7 @@ import (
 	"github.com/oreshkanet/aTES/tasktracker/internal/domain"
 )
 
-func (h *Handler) HandleUserStream(rawMessage []byte) error {
+func (c *Consumer) HandleUserStream(rawMessage []byte) error {
 	var err error
 
 	message := &domain.UserStreamMessage{}
@@ -24,11 +24,11 @@ func (h *Handler) HandleUserStream(rawMessage []byte) error {
 	switch message.Operation {
 	case "C":
 		// Операция создания (обновление) пользователя в системе
-		err = h.usersService.CreateUser(ctx, user)
+		err = c.usersService.CreateUser(ctx, user)
 		break
 	case "U":
 		// Обновление пользователя в системе
-		err = h.usersService.UpdateUser(ctx, user)
+		err = c.usersService.UpdateUser(ctx, user)
 		break
 	case "D":
 		// TODO: Удаление пользователя из системы

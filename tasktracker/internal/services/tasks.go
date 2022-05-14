@@ -10,21 +10,22 @@ type TasksRepository interface {
 	//FindByPublicId(ctx context.Context, publicId string) (*domain.Task, error)
 }
 
-type TasksEventsClient interface {
-	TaskAdded(ctx context.Context, message *domain.TaskAddMessage) error
+type TasksEventsProducer interface {
+	TaskStream(ctx context.Context, message *domain.TaskStreamMessage) error
+	TaskAdded(ctx context.Context, message *domain.TaskAddedMessage) error
 }
 
 type Tasks struct {
-	events     TasksEventsClient
-	reposUsers UsersRepository
-	reposTasks TasksRepository
+	eventsProducer TasksEventsProducer
+	reposUsers     UsersRepository
+	reposTasks     TasksRepository
 }
 
-func NewTasks(events TasksEventsClient, reposUsers UsersRepository, reposTasks TasksRepository) *Tasks {
+func NewTasks(events TasksEventsProducer, reposUsers UsersRepository, reposTasks TasksRepository) *Tasks {
 	return &Tasks{
-		events:     events,
-		reposUsers: reposUsers,
-		reposTasks: reposTasks,
+		eventsProducer: events,
+		reposUsers:     reposUsers,
+		reposTasks:     reposTasks,
 	}
 }
 
@@ -41,17 +42,16 @@ func (s *Tasks) AddTask(ctx context.Context, title string, description string) (
 	// TODO: Ассайн задачи на пользователя
 	// TODO: Публикация события добавления задачи в систему "tasks.added" для расчёта её стоимости
 	// TODO: Публикация стрим-сообщения
-	err = s.events.TaskAdded(ctx, &domain.TaskAddMessage{
+	err = s.eventsProducer.TaskAdded(ctx, &domain.TaskAddedMessage{
 		PublicId: task.PublicId,
 	})
-	/*
-		err = s.events.TaskStream(ctx, &domain.TaskStreamMessage{
-			Operation:   "C",
-			PublicId:    task.PublicId,
-			Title:       task.Title,
-			Description: task.Description,
-		})
-	*/
+	err = s.eventsProducer.TaskStream(ctx, &domain.TaskStreamMessage{
+		Operation:   "C",
+		PublicId:    task.PublicId,
+		Title:       task.Title,
+		Description: task.Description,
+	})
+
 	if err != nil {
 		return nil, err
 	}

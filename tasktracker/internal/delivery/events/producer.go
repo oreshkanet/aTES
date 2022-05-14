@@ -6,22 +6,25 @@ import (
 	"github.com/oreshkanet/aTES/tasktracker/internal/transport"
 )
 
-type Client struct {
+type Producer struct {
 	broker transport.MessageBroker
 
 	taskStreamCh chan []byte
+	taskAddedCh  chan []byte
 }
 
-func NewClient(broker transport.MessageBroker) *Client {
-	client := &Client{
+func NewProducer(broker transport.MessageBroker) *Producer {
+	client := &Producer{
 		broker:       broker,
 		taskStreamCh: make(chan []byte),
+		taskAddedCh:  make(chan []byte),
 	}
 
 	return client
 }
 
-func (c *Client) Init(ctx context.Context) {
+func (p *Producer) Init(ctx context.Context) {
 	// TODO: запускаем косьюминг топиков
-	go c.broker.Produce(ctx, domain.TaskStreamTopic, c.taskStreamCh)
+	go p.broker.Produce(ctx, domain.TaskStreamTopic, p.taskStreamCh)
+	go p.broker.Produce(ctx, domain.TaskAddedTopic, p.taskAddedCh)
 }
