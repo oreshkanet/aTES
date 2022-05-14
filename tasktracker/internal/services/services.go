@@ -1,10 +1,9 @@
-// Имплементация бизнес-логики приложения
+// services - Имплементация бизнес-логики приложения
 package services
 
 import (
 	"context"
 	"github.com/oreshkanet/aTES/tasktracker/internal/domain"
-	"github.com/oreshkanet/aTES/tasktracker/internal/repository"
 )
 
 type UsersService interface {
@@ -12,12 +11,25 @@ type UsersService interface {
 	UpdateUser(ctx context.Context, user *domain.User) error
 }
 
-type Services struct {
-	Users UsersService
+type TasksService interface {
+	AddTask(ctx context.Context, title string, description string) (*domain.Task, error)
+	DoneTask(ctx context.Context, taskPublicId string, userPublicId string) error
+	ReAssignTasks(ctx context.Context) error
 }
 
-func NewServices(repos *repository.Repository) *Services {
+type Services struct {
+	Users UsersService
+	Tasks TasksService
+}
+
+type ConfigService struct {
+	ReposUsers UsersRepository
+	ReposTasks TasksRepository
+}
+
+func NewServices(config *ConfigService) *Services {
 	return &Services{
-		Users: NewUsers(repos.Users),
+		Users: NewUsers(config.ReposUsers),
+		Tasks: NewTasks(config.ReposUsers, config.ReposTasks),
 	}
 }

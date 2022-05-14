@@ -26,3 +26,5 @@ func (s *Users) CreateUser(ctx context.Context, user *domain.User) error {
 func (s *Users) UpdateUser(ctx context.Context, user *domain.User) error {
 	return s.repos.CreateOrUpdateUser(ctx, user)
 }
+
+// TODO: ChangeRoleUser(ctx context.Context, publicId string, role string) error
