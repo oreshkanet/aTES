@@ -39,7 +39,7 @@ func (a *App) Run(ctx context.Context, db database.DB, messageBroker transport.M
 	appEventsConsumer := events.NewConsumer(appServices.Users)
 
 	// Запускаем консьюминг и паблишинг
-	appEventsConsumer.Init(ctx)
+	appEventsProducer.Init(ctx)
 	err = appEventsConsumer.Init(ctx, messageBroker)
 	if err != nil {
 		log.Fatalf("Create events:%s", err)
