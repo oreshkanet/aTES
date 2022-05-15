@@ -6,9 +6,9 @@ import (
 	"github.com/oreshkanet/aTES/tasktracker/internal/delivery/events"
 	"github.com/oreshkanet/aTES/tasktracker/internal/repository"
 	"github.com/oreshkanet/aTES/tasktracker/internal/services"
-	"github.com/oreshkanet/aTES/tasktracker/internal/transport/mq"
 	"github.com/oreshkanet/aTES/tasktracker/pkg/authorizer"
 	"github.com/oreshkanet/aTES/tasktracker/pkg/database"
+	"github.com/oreshkanet/aTES/tasktracker/pkg/mq"
 	"log"
 	"net/http"
 )

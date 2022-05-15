@@ -1,6 +1,6 @@
 package domain
 
-var UserStreamTopic = "auth.user.cud.0"
+var UserStreamTopic = "auth.user.stream.0"
 
 type User struct {
 	Id       string `db:"id"`
