@@ -1,6 +1,8 @@
 package domain
 
-import "golang.org/x/text/currency"
+import (
+	"golang.org/x/text/currency"
+)
 
 var TransactStreamTopic = "account.transact.stream.0"
 var TransactPaymentTopic = "account.transact.payment.0"
