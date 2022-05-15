@@ -12,7 +12,7 @@ import (
 var TopicUserStream = "auth.user.stream.0"
 
 type UserStreamMessage struct {
-	Operation string `json:"id"`
+	Operation string `json:"operation"`
 	PublicId  string `json:"public_id"`
 	Name      string `json:"name"`
 	Role      string `json:"role"`
