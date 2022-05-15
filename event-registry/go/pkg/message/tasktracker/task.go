@@ -12,6 +12,14 @@ type TaskStreamMessageV1 struct {
 	Description string `json:"description"`
 }
 
+type TaskStreamMessageV2 struct {
+	Operation   string `json:"operation"`
+	PublicId    string `json:"public_id"`
+	Title       string `json:"title"`
+	JiraId      string `json:"jira_id"`
+	Description string `json:"description"`
+}
+
 type TaskAddedMessageV1 struct {
 	PublicId string `json:"public_id"`
 }

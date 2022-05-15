@@ -1,6 +1,7 @@
 package message
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -12,4 +13,8 @@ type EventMessage struct {
 	Producer     string    `json:"producer"`
 
 	Data interface{} `json:"data"`
+}
+
+func GetTopicName(domain string, event string, version string) string {
+	return fmt.Sprintf("%s.%s.v%s", domain, event, version)
 }
