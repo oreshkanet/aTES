@@ -27,3 +27,25 @@ func (p *Producer) TaskAdded(ctx context.Context, message *domain.TaskAddedMessa
 
 	return err
 }
+
+func (p *Producer) TaskAssaigned(ctx context.Context, message *domain.TaskAssignedMessage) error {
+	// TODO: Поработать с контекстом и сделать тайм-аут или вообще сделать асинхронную отправку через горутину
+	msg, err := json.Marshal(message)
+	if err != nil {
+		return err
+	}
+	p.taskAssignedCh <- msg
+
+	return err
+}
+
+func (p *Producer) TaskDone(ctx context.Context, message *domain.TaskDoneMessage) error {
+	// TODO: Поработать с контекстом и сделать тайм-аут или вообще сделать асинхронную отправку через горутину
+	msg, err := json.Marshal(message)
+	if err != nil {
+		return err
+	}
+	p.taskDoneCh <- msg
+
+	return err
+}

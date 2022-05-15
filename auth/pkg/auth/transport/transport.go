@@ -11,6 +11,13 @@ import (
 
 var TopicUserStream = "auth.user.stream.0"
 
+type UserStreamMessage struct {
+	Operation string `json:"id"`
+	PublicId  string `json:"public_id"`
+	Name      string `json:"name"`
+	Role      string `json:"role"`
+}
+
 type KafkaMessage struct {
 	Topic     string
 	Routing   string
@@ -28,7 +35,13 @@ func (q *Transports) Close() {
 }
 
 func (q *Transports) PubUser(ctx context.Context, user *models.User) error {
-	message, err := json.Marshal(user)
+	userMessage := &UserStreamMessage{
+		Operation: "C",
+		PublicId:  user.PublicId,
+		Name:      user.Name,
+		Role:      user.Role,
+	}
+	message, err := json.Marshal(userMessage)
 	if err != nil {
 		return fmt.Errorf("Pub User: %v", err)
 	}

@@ -1,9 +1,9 @@
 package domain
 
-var TaskStreamTopic = "tasks.task.stream.0"
-var TaskAddedTopic = "tasks.task.added.0"
-var TaskAssignedTopic = "tasks.task.assigned.0"
-var TaskDoneTopic = "tasks.task.done.0"
+var TaskStreamTopic = "task-tracker.task.stream.0"
+var TaskAddedTopic = "task-tracker.task.added.0"
+var TaskAssignedTopic = "task-tracker.task.assigned.0"
+var TaskDoneTopic = "task-tracker.task.done.0"
 
 type Task struct {
 	Id         int     `db:"public_id"`
