@@ -9,7 +9,7 @@ import (
 	"github.com/oreshkanet/aTES/auth/pkg/kafka"
 )
 
-var TOPIC_USER = "auth.user.cud.0"
+var TopicUserStream = "auth.user.stream.0"
 
 type KafkaMessage struct {
 	Topic     string
@@ -36,7 +36,7 @@ func (q *Transports) PubUser(ctx context.Context, user *models.User) error {
 }
 
 func CreateTransport(kafkaAddress string) *Transports {
-	userConn := kafka.NewProducer(kafkaAddress, TOPIC_USER)
+	userConn := kafka.NewProducer(kafkaAddress, TopicUserStream)
 
 	return &Transports{
 		UserTopic: userConn,
