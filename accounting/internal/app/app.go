@@ -2,13 +2,13 @@ package app
 
 import (
 	"context"
-	"github.com/oreshkanet/aTES/tasktracker/internal/delivery/api"
-	"github.com/oreshkanet/aTES/tasktracker/internal/delivery/events"
-	"github.com/oreshkanet/aTES/tasktracker/internal/repository"
-	"github.com/oreshkanet/aTES/tasktracker/internal/services"
+	"github.com/oreshkanet/aTES/accounting/internal/delivery/api"
+	"github.com/oreshkanet/aTES/accounting/internal/delivery/events"
+	"github.com/oreshkanet/aTES/accounting/internal/repository"
+	"github.com/oreshkanet/aTES/accounting/internal/services"
+	"github.com/oreshkanet/aTES/accounting/internal/transport/mq"
 	"github.com/oreshkanet/aTES/tasktracker/pkg/authorizer"
 	"github.com/oreshkanet/aTES/tasktracker/pkg/database"
-	"github.com/oreshkanet/aTES/tasktracker/pkg/mq"
 	"log"
 	"net/http"
 )
@@ -40,13 +40,17 @@ func (a *App) Run(ctx context.Context, conf *Config) {
 
 	// Создаём сервисы приложения, выполняющие бизнес-логику
 	appServices := services.NewServices(&services.ConfigService{
-		TasksEventsProducer: appEventsProducer,
-		ReposUsers:          appRepos.Users,
-		ReposTasks:          appRepos.Tasks,
+		AccProducer: appEventsProducer,
+		ReposUsers:  appRepos.Users,
+		ReposTasks:  appRepos.Tasks,
 	})
 
 	// Создаём консьюминг нужных событий из брокера сообщений
-	appEventsConsumer := events.NewConsumer(appServices.Users)
+	appEventsConsumer := events.NewConsumer(
+		appServices.Users,
+		appServices.Tasks,
+		appServices.Account,
+	)
 
 	// Запускаем консьюминг и паблишинг
 	appEventsProducer.Init(ctx)
@@ -59,9 +63,9 @@ func (a *App) Run(ctx context.Context, conf *Config) {
 	// Запускаем API
 	appAPI := api.NewApi(
 		&api.Config{
-			Srv:         conf.HTTP,
-			Auth:        conf.Auth,
-			TaskService: appServices.Tasks,
+			Srv:        conf.HTTP,
+			Auth:       conf.Auth,
+			AccService: appServices.Account,
 		},
 	)
 	go func() {
