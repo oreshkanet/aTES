@@ -19,12 +19,7 @@ type App struct {
 	authUseCase usecase.Auth
 }
 
-func NewApp(signingKey string, hashSalt string) *App {
-	authUseCase := usecase.NewAuth(
-		[]byte(signingKey),
-		hashSalt,
-		time.Minute)
-
+func NewApp(authUseCase usecase.Auth) *App {
 	return &App{
 		authUseCase: authUseCase,
 	}

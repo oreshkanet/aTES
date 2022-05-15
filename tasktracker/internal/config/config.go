@@ -1,4 +1,4 @@
-package configs
+package config
 
 import (
 	"os"
@@ -7,9 +7,8 @@ import (
 type Configs struct {
 	Port       string
 	SigningKey string
-	HashSalt   string
 
-	MsSqlhost string
+	MsSqlHost string
 	MsSqlDb   string
 	MsSqlUser string
 	MsSqlPwd  string
@@ -22,9 +21,8 @@ func Load() *Configs {
 	return &Configs{
 		Port:       os.Getenv("PORT"),
 		SigningKey: os.Getenv("SIGNING_KEY"),
-		HashSalt:   os.Getenv("HASH_SALT"),
 
-		MsSqlhost: os.Getenv("MSSQL_HOST"),
+		MsSqlHost: os.Getenv("MSSQL_HOST"),
 		MsSqlDb:   os.Getenv("MSSQL_DB"),
 		MsSqlUser: os.Getenv("MSSQL_USER"),
 		MsSqlPwd:  os.Getenv("MSSQL_PWD"),

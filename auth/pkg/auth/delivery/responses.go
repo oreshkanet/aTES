@@ -10,11 +10,11 @@ type ErrorResponse struct {
 }
 
 type SignUpResponse struct {
-	user *models.User `json:"user"`
+	User *models.User `json:"user"`
 }
 
 type SignInResponse struct {
-	Token string `json:"token,omitempty"`
+	Token string `json:"authorizer,omitempty"`
 }
 
 func newSignInResponse(token string) *SignInResponse {

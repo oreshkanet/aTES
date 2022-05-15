@@ -1,17 +1,18 @@
-module github.com/oreshkanet/aTES/auth
+module github.com/oreshkanet/aTES/tasktracker
 
 go 1.18
 
 require (
-	github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1
-	github.com/gin-gonic/gin v1.7.7
+	github.com/google/uuid v1.3.0
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/rubenv/sql-migrate v1.1.1
 	github.com/segmentio/kafka-go v0.4.31
 )
 
 require (
+	github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
+	github.com/gin-gonic/gin v1.7.7 // indirect
 	github.com/go-gorp/gorp/v3 v3.0.2 // indirect
 	github.com/go-playground/locales v0.13.0 // indirect
 	github.com/go-playground/universal-translator v0.17.0 // indirect
