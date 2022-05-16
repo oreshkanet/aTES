@@ -1,4 +1,4 @@
-module github.com/oreshkanet/aTES/event-registry
+module github.com/oreshkanet/aTES/event-registry/go
 
 go 1.18
 
