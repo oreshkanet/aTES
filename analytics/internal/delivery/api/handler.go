@@ -9,11 +9,11 @@ import (
 )
 
 type Handler struct {
-	analytic service.Analytic
+	analytic service.AnalyticService
 }
 
-func NewHandler(service service.Analytic) *Handler {
-	return &Handler{analytic: service}
+func NewHandler(analyticSvc service.AnalyticService) *Handler {
+	return &Handler{analytic: analyticSvc}
 }
 
 func (h *Handler) getNegativeBalance(c *gin.Context) {

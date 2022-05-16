@@ -3,8 +3,9 @@ package repository
 import "github.com/oreshkanet/aTES/packages/pkg/database"
 
 type Repository struct {
-	Users *UsersRepository
-	Tasks *TasksRepository
+	Users    *UsersRepository
+	Tasks    *TasksRepository
+	Analytic *Analytic
 }
 
 func NewRepository(db database.DB) (*Repository, error) {
@@ -19,9 +20,15 @@ func NewRepository(db database.DB) (*Repository, error) {
 		return nil, err
 	}
 
+	reposAnalytic, err := NewAnalytic(db)
+	if err != nil {
+		return nil, err
+	}
+
 	repos := &Repository{
-		Users: reposUser,
-		Tasks: reposTasks,
+		Users:    reposUser,
+		Tasks:    reposTasks,
+		Analytic: reposAnalytic,
 	}
 
 	return repos, nil

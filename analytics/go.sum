@@ -256,10 +256,12 @@ github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742/go.mod h1:bx2lN
 github.com/modern-go/reflect2 v1.0.1 h1:9f412s+6RmYXLWZSEzVVgPGK7C2PphHj5RJrvfx9AWI=
 github.com/modern-go/reflect2 v1.0.1/go.mod h1:bx2lNnkwVCuqBIxFjflWJWanXIb3RllmbCylyMrvgv0=
 github.com/olekukonko/tablewriter v0.0.5/go.mod h1:hPp6KlRPjbx+hW8ykQs1w3UBbZlj6HuIJcUGPhkA7kY=
-github.com/oreshkanet/aTES v0.0.0-20220515173537-db304635cb30 h1:v/PpIGnRVy2hoSfoirXSLaa0UbguXyAF9x4FqAcpv0A=
-github.com/oreshkanet/aTES v0.0.0-20220515173537-db304635cb30/go.mod h1:F+TLugqeknAxOak5pbXmk3/FOFwEKiPSnOJNW7iITyw=
-github.com/oreshkanet/aTES/accounting v0.0.0-20220515173537-db304635cb30 h1:GX7TM/r9uHLRZewY6Hb9k5KxCqm/LscqzF5t6pGMQ7M=
-github.com/oreshkanet/aTES/accounting v0.0.0-20220515173537-db304635cb30/go.mod h1:nEmFGBWXCS+GofTJf3unPiGjpP8qnAdPpTRZhdyE128=
+github.com/oreshkanet/aTES v0.0.0-20220516030735-dfed44f8c997 h1:jpYBKmmHqyDcGbfSnHWWnLRcIszkfXybY49oJiWm4cs=
+github.com/oreshkanet/aTES v0.0.0-20220516030735-dfed44f8c997/go.mod h1:F+TLugqeknAxOak5pbXmk3/FOFwEKiPSnOJNW7iITyw=
+github.com/oreshkanet/aTES/accounting v0.0.0-20220516030735-dfed44f8c997 h1:/8lBsR/hDcNa3DO0+BeWkzrf7VIqqFwsrC75a3lXTZk=
+github.com/oreshkanet/aTES/accounting v0.0.0-20220516030735-dfed44f8c997/go.mod h1:nEmFGBWXCS+GofTJf3unPiGjpP8qnAdPpTRZhdyE128=
+github.com/oreshkanet/aTES/event-registry/go v0.0.0-20220516030735-dfed44f8c997 h1:uDVZ7lOhv8AUo5zRCjCav6RnXPXytdwq4ncrP1Q1Olw=
+github.com/oreshkanet/aTES/event-registry/go v0.0.0-20220516030735-dfed44f8c997/go.mod h1:pRwSiZaVPubjLhPrWufJZOKzu8EX/12Ebv97KP3Azk0=
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
 github.com/pelletier/go-toml v1.9.3/go.mod h1:u1nR/EPcESfeI/szUZKdtJ0xRNbUoANCkoOuaOx1Y+c=
 github.com/pkg/diff v0.0.0-20210226163009-20ebb0f2a09e/go.mod h1:pJLUxLENpZxwdsKMEsNbx1VGcRFpLqf3715MtcvvzbA=
