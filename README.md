@@ -2,11 +2,11 @@
 
 ## **Архитектура - 0 LVL**
 
-[Архитектура 0 LVL](/arch-lvl-0/README.MD "Архитектура 0 LVL")
+[Архитектура 0 LVL](/arch-lvl-0/README.md "Архитектура 0 LVL")
 
 ## **Event Storming**
 
-![Event Storming](/arch/aTES-EventStorming.png "Event Storming")
+![Event Storming](/arch/aTES-EventStorming.jpg "Event Storming")
 
 ## **Domains**
 
