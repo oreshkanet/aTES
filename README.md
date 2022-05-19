@@ -10,15 +10,15 @@
 
 ## **Domains**
 
-![Domains](/arch/aTES-Domains.png "Domains")
+![Domains](/arch/aTES-Domains.jpg "Domains")
 
 ## **Data Model**
 
-![Data Model](/arch/aTES-DataModel.png "Data Model")
+![Data Model](/arch/aTES-DataModel.jpg "Data Model")
 
 ## **Services**
 
-![Services](/arch/aTES-Services.png "Services")
+![Services](/arch/aTES-Services.jpg "Services")
 
 ## **Контекст к домашней работе**
 
