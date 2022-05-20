@@ -1,30 +1,27 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
 
-  "title": "Auth.Users-stream.v1",
-  "description": "json schema for auth user streaming event (version 1)",
+  "title": "Accounting.Task-cost-calculated.v1",
+  "description": "json schema для событий расчёта стоимости задач (version 1)",
 
   "definitions": {
     "event_data": {
       "type": "object",
       "properties": {
-        "operations": {
-          "type": "string"
-        },
         "public_id": {
           "type": "string"
         },
-        "name": {
-          "type": "string"
+        "assign_cost": {
+          "type": "number"
         },
-        "role": {
-          "type": "string"
+        "done_cost": {
+          "type": "number"
         }
       },
       "required": [
-        "operations",
         "public_id",
-        "name"
+        "assign_cost",
+        "done_cost"
       ]
     }
   },

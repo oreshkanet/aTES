@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  "title": "Accounting.Transaction-stream.v1",
+  "description": "json schema для стриминга событий добавление или изменения транзакций (version 1)",
+
+  "definitions": {
+    "event_data": {
+      "type": "object",
+      "properties": {
+        "public_id": {
+          "type": "string"
+        },
+        "user_public_id": {
+          "type": "string"
+        },
+        "task_public_id": {
+          "type": "string"
+        },
+        "credit": {
+          "$comment": "Зачисление денег на счёт",
+          "type": "number"
+        },
+        "debit": {
+          "$comment": "Списание денег со счёта",
+          "type": "number"
+        },
+        "status": {
+          "enum": [0,1]
+        }
+      },
+      "required": [
+        "public_id",
+        "user_public_id",
+        "task_public_id",
+        "credit",
+        "debit",
+        "status"
+      ]
+    }
+  },
+
+  "type": "object",
+
+  "properties": {
+    "event_id":      { "type": "string" },
+    "event_version": { "enum": [1] },
+    "event_name":    { "type": "string" },
+    "event_time":    { "type": "string" },
+    "producer":      { "type": "string" },
+
+    "data": { "$ref": "#/definitions/event_data" }
+  },
+
+  "required": [
+    "event_id",
+    "event_version",
+    "event_name",
+    "event_time",
+    "producer",
+    "data"
+  ]
+}
