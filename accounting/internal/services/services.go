@@ -1,4 +1,4 @@
-// Package services services - Имплементация бизнес-логики приложения
+// Package service service - Имплементация бизнес-логики приложения
 package services
 
 import (

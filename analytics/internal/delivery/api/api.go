@@ -16,7 +16,7 @@ type Api struct {
 type Config struct {
 	Srv      *http.Server
 	Auth     authorizer.AuthToken
-	Analytic service.Analytic
+	Analytic service.AnalyticService
 }
 
 func NewApi(config *Config) *Api {
@@ -40,9 +40,9 @@ func (a *Api) Run() error {
 	a.srv.Handler = router
 
 	// Роутим эндпойнт авторизации
-	taskRouter := router.Group("/accounting")
-	taskRouter.GET("/balance", a.handler.getBalance)
-	//TODO: Добавить все роуты работы с аккаунтингом
+	taskRouter := router.Group("/analytic")
+	taskRouter.GET("/negative_balance", a.handler.getNegativeBalance)
+	//TODO: Добавить все роуты работы с аналитикой
 
 	return a.srv.ListenAndServe()
 }

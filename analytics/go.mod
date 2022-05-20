@@ -4,8 +4,9 @@ go 1.18
 
 require (
 	github.com/gin-gonic/gin v1.7.7
-	github.com/oreshkanet/aTES v0.0.0-20220515173537-db304635cb30
-	github.com/oreshkanet/aTES/accounting v0.0.0-20220515173537-db304635cb30
+	github.com/oreshkanet/aTES v0.0.0-20220516030735-dfed44f8c997
+	github.com/oreshkanet/aTES/accounting v0.0.0-20220516030735-dfed44f8c997
+	github.com/oreshkanet/aTES/event-registry/go v0.0.0-20220516030735-dfed44f8c997
 )
 
 require (
