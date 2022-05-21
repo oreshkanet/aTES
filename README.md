@@ -8,13 +8,13 @@
 
 ![Event Storming](/arch/aTES-EventStorming.jpg "Event Storming")
 
-## **Domains**
-
-![Domains](/arch/aTES-Domains.jpg "Domains")
-
 ## **Data Model**
 
 ![Data Model](/arch/aTES-DataModel.jpg "Data Model")
+
+## **Domains**
+
+![Domains](/arch/aTES-Domains.jpg "Domains")
 
 ## **Services**
 
