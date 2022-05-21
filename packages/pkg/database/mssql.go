@@ -45,7 +45,7 @@ func (d *mssql) Delete(ctx context.Context, query string, arg interface{}) error
 	return nil
 }
 
-func (d *mssql) MigrateUp(migrations *migrate.MemoryMigrationSource) error {
+func (d *mssql) MigrateUp(migrations migrate.MigrationSource) error {
 	_, err := migrate.Exec(d.DB.DB, "mssql", migrations, migrate.Up)
 	if err != nil {
 		return fmt.Errorf("migrate DB: %w", err)

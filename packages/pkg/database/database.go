@@ -12,7 +12,7 @@ type DB interface {
 	Insert(context.Context, string, interface{}) error
 	Update(context.Context, string, interface{}) error
 	Delete(context.Context, string, interface{}) error
-	MigrateUp(migrations *migrate.MemoryMigrationSource) error
+	MigrateUp(migrations migrate.MigrationSource) error
 }
 
 type DBParam struct {
