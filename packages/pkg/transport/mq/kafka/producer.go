@@ -10,14 +10,16 @@ import (
 type Producer struct {
 	*kafka.Conn
 	topic *mq.Topic
+	valid mq.Validator
 	msgCh chan []byte
 	// TODO: Политика ретрая публикации
 }
 
-func newProducer(conn *kafka.Conn, topic *mq.Topic) *Producer {
+func newProducer(conn *kafka.Conn, topic *mq.Topic, valid mq.Validator) *Producer {
 	return &Producer{
 		Conn:  conn,
 		topic: topic,
+		valid: valid,
 		msgCh: nil,
 	}
 }
@@ -45,7 +47,11 @@ func (p *Producer) Run(ctx context.Context) {
 }
 
 func (p *Producer) Publish(msg []byte) error {
-	// TODO: Валидация сообщения
+	// Валидируем сообщение
+	err := p.valid.ValidateBytes(msg, p.topic.Domain, p.topic.Event, p.topic.Version)
+	if err != nil {
+		return err
+	}
 
 	if p.msgCh == nil {
 		return fmt.Errorf("producer %s not run", p.topic.GetName())

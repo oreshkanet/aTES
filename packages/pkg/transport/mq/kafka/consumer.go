@@ -9,15 +9,16 @@ import (
 type Consumer struct {
 	*kafka.Conn
 	topic  *mq.Topic
+	valid  mq.Validator
 	msgCh  chan []byte
 	readCh chan interface{}
 }
 
-func newConsumer(conn *kafka.Conn, topic *mq.Topic) *Consumer {
+func newConsumer(conn *kafka.Conn, topic *mq.Topic, valid mq.Validator) *Consumer {
 	return &Consumer{
 		Conn:  conn,
 		topic: topic,
-		msgCh: nil,
+		valid: valid,
 	}
 }
 
@@ -46,11 +47,19 @@ func (c *Consumer) Run(ctx context.Context) {
 			default:
 				n, err := batch.Read(b)
 				if err != nil {
-					// TODO: Под вопросом. Если не смогли прочитать сообшение, возможно, будет выгоднее его пропустить
-					break f2
+					// TODO: Ошибка чтения - подумать политику ретрая (переподъём подключения или падение сервиса)
 				}
+				msg := b[:n]
+				// Валидируем сообщение
+				err = c.valid.ValidateBytes(msg, c.topic.Domain, c.topic.Event, c.topic.Version)
+				if err != nil {
+					// Пропускаем невалидные сообщения
+					// TODO: Логируем проблемное сообщение
+					continue
+				}
+
 				// Засылаем сырые данные в канал сообщений
-				c.msgCh <- b[:n]
+				c.msgCh <- msg
 			}
 		}
 	}()
