@@ -13,5 +13,6 @@ require (
 require (
 	github.com/go-gorp/gorp/v3 v3.0.2 // indirect
 	github.com/klauspost/compress v1.14.2 // indirect
+	github.com/oreshkanet/aTES/event-registry/go v0.0.0-20220519172613-529e8bb32727 // indirect
 	github.com/pierrec/lz4/v4 v4.1.14 // indirect
 )
