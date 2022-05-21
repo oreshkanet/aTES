@@ -18,3 +18,5 @@ type EventMessage struct {
 func GetTopicName(domain string, event string, version string) string {
 	return fmt.Sprintf("%s.%s.v%s", domain, event, version)
 }
+
+// FIXME: домен в контекст сообщения и функцию валидации!!!
