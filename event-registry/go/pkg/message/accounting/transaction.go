@@ -1,5 +1,7 @@
 package accounting
 
+var TransactionStreamEvent = "transaction-stream"
+
 type TransactionStreamV1 struct {
 	PublicId     string  `json:"public_id"`
 	UserPublicId string  `json:"user_public_id"`

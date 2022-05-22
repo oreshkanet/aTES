@@ -43,6 +43,7 @@
   "type": "object",
 
   "properties": {
+    "trace_id":      { "type": "string" },
     "event_id":      { "type": "string" },
     "event_version": { "enum": [1] },
     "event_name":    { "type": "string" },
@@ -53,6 +54,7 @@
   },
 
   "required": [
+    "trace_id",
     "event_id",
     "event_version",
     "event_name",

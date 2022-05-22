@@ -27,9 +27,29 @@ func (r *EventSchemaRegistry) RegisterSchema(domain string, event string, versio
 			r.path, domain, event, version))
 }
 
-func (r *EventSchemaRegistry) Validate(subject string, domain string, event string, version string) error {
+func (r *EventSchemaRegistry) ValidateString(subject string, domain string, event string, version string) error {
 	schema := fmt.Sprintf("%s.%s.v%s", domain, event, version)
 	subjectDoc := gojsonschema.NewStringLoader(subject)
+	schemaDoc := r.schemas[schema]
+
+	result, err := gojsonschema.Validate(schemaDoc, subjectDoc)
+	if err != nil {
+		return err
+	}
+
+	if !result.Valid() {
+		errMsg := ""
+		for _, desc := range result.Errors() {
+			errMsg = fmt.Sprintf("%s- %s\n", errMsg, desc)
+		}
+		return fmt.Errorf("the document is not valid. see errors :\n%s", errMsg)
+	}
+	return nil
+}
+
+func (r *EventSchemaRegistry) ValidateBytes(subject []byte, domain string, event string, version string) error {
+	schema := fmt.Sprintf("%s.%s.v%s", domain, event, version)
+	subjectDoc := gojsonschema.NewBytesLoader(subject)
 	schemaDoc := r.schemas[schema]
 
 	result, err := gojsonschema.Validate(schemaDoc, subjectDoc)

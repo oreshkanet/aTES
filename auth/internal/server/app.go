@@ -2,6 +2,8 @@ package server
 
 import (
 	"context"
+	"github.com/oreshkanet/aTES/auth/internal/delivery"
+	"github.com/oreshkanet/aTES/auth/internal/service"
 	"log"
 	"net/http"
 	"os"
@@ -9,17 +11,15 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/oreshkanet/aTES/auth/pkg/auth/delivery"
-	"github.com/oreshkanet/aTES/auth/pkg/auth/usecase"
 )
 
 type App struct {
 	httpServer *http.Server
 
-	authUseCase usecase.Auth
+	authUseCase service.Auth
 }
 
-func NewApp(authUseCase usecase.Auth) *App {
+func NewApp(authUseCase service.Auth) *App {
 	return &App{
 		authUseCase: authUseCase,
 	}

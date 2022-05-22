@@ -17,7 +17,6 @@ func newConsumer(conn *kafka.Conn, topic *mq.Topic) *Consumer {
 	return &Consumer{
 		Conn:  conn,
 		topic: topic,
-		msgCh: nil,
 	}
 }
 
@@ -46,11 +45,19 @@ func (c *Consumer) Run(ctx context.Context) {
 			default:
 				n, err := batch.Read(b)
 				if err != nil {
-					// TODO: Под вопросом. Если не смогли прочитать сообшение, возможно, будет выгоднее его пропустить
-					break f2
+					// TODO: Ошибка чтения - подумать политику ретрая (переподъём подключения или падение сервиса)
 				}
+				msg := b[:n]
+				// Валидируем сообщение
+				err = c.topic.ValidateBytes(msg)
+				if err != nil {
+					// Пропускаем невалидные сообщения
+					// TODO: Логируем проблемное сообщение
+					continue
+				}
+
 				// Засылаем сырые данные в канал сообщений
-				c.msgCh <- b[:n]
+				c.msgCh <- msg
 			}
 		}
 	}()

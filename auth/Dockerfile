@@ -8,6 +8,6 @@ RUN go mod download
 
 COPY ./ ./
 
-RUN go build -o /auth-api ./cmd/api/main.go
+RUN go build -o /auth-app ./cmd/app/main.go
 
 CMD [ "/auth-api" ]

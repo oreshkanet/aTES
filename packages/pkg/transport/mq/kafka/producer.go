@@ -45,7 +45,11 @@ func (p *Producer) Run(ctx context.Context) {
 }
 
 func (p *Producer) Publish(msg []byte) error {
-	// TODO: Валидация сообщения
+	// Валидируем сообщение
+	err := p.topic.ValidateBytes(msg)
+	if err != nil {
+		return err
+	}
 
 	if p.msgCh == nil {
 		return fmt.Errorf("producer %s not run", p.topic.GetName())

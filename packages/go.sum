@@ -236,10 +236,6 @@ github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421/go.mod h1:6dJ
 github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742/go.mod h1:bx2lNnkwVCuqBIxFjflWJWanXIb3RllmbCylyMrvgv0=
 github.com/modern-go/reflect2 v1.0.1/go.mod h1:bx2lNnkwVCuqBIxFjflWJWanXIb3RllmbCylyMrvgv0=
 github.com/olekukonko/tablewriter v0.0.5/go.mod h1:hPp6KlRPjbx+hW8ykQs1w3UBbZlj6HuIJcUGPhkA7kY=
-github.com/oreshkanet/aTES/event-registry/go v0.0.0-20220519172613-529e8bb32727 h1:rSEYO+KCGh4qo7CVTH8VFTkkzyZpAZim0Ea5nkWGSMs=
-github.com/oreshkanet/aTES/event-registry/go v0.0.0-20220519172613-529e8bb32727/go.mod h1:pRwSiZaVPubjLhPrWufJZOKzu8EX/12Ebv97KP3Azk0=
-github.com/oreshkanet/aTES/tasktracker v0.0.0-20220516030735-dfed44f8c997 h1:CV3DodSOLO4vUiHtZ0p9KM1VHEixgy/WMdD4Hi/kWMw=
-github.com/oreshkanet/aTES/tasktracker v0.0.0-20220516030735-dfed44f8c997/go.mod h1:b5x3cXLFDFdmhgACc8ZfvwIuTL+YkBL0RQDYMIOWKXw=
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
 github.com/pelletier/go-toml v1.9.3/go.mod h1:u1nR/EPcESfeI/szUZKdtJ0xRNbUoANCkoOuaOx1Y+c=
 github.com/pierrec/lz4/v4 v4.1.14 h1:+fL8AQEZtz/ijeNnpduH0bROTu0O3NZAlPjQxGn8LwE=
