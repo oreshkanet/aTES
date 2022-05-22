@@ -1,4 +1,4 @@
-package authorizer
+package jwt
 
 import (
 	"fmt"
@@ -6,21 +6,21 @@ import (
 	"time"
 )
 
-type JwtToken struct {
+type Token struct {
 	signingKey     string
 	expireDuration time.Duration
 	signingMethod  *jwt.SigningMethodHMAC
 }
 
-func NewJwtToken(signingKey string, expireDuration time.Duration) *JwtToken {
-	return &JwtToken{
+func NewJwtToken(signingKey string, expireDuration time.Duration) *Token {
+	return &Token{
 		signingKey:     signingKey,
 		expireDuration: expireDuration,
 		signingMethod:  jwt.SigningMethodHS256,
 	}
 }
 
-func (a *JwtToken) Generate(publicId string) (string, error) {
+func (a *Token) Generate(publicId string) (string, error) {
 	token := jwt.NewWithClaims(
 		jwt.SigningMethodHS256,
 		Claims{
@@ -34,7 +34,7 @@ func (a *JwtToken) Generate(publicId string) (string, error) {
 	return token.SignedString(a.signingKey)
 }
 
-func (a *JwtToken) ParseToken(accessToken string) (string, error) {
+func (a *Token) ParseToken(accessToken string) (string, error) {
 	token, err := jwt.ParseWithClaims(accessToken, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
