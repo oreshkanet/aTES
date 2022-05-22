@@ -1,14 +1,19 @@
 package tasktracker
 
+var (
+	TaskStreamEvent   = "task-stream"
+	TaskAddedEvent    = "task-added"
+	TaskAssignedEvent = "task-assigned"
+	TaskDoneMessage   = "task-done"
+)
+
 type TaskStreamMessageV1 struct {
-	Operation   string `json:"operation"`
 	PublicId    string `json:"public_id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
 }
 
 type TaskStreamMessageV2 struct {
-	Operation   string `json:"operation"`
 	PublicId    string `json:"public_id"`
 	JiraId      string `json:"jira_id"`
 	Title       string `json:"title"`
