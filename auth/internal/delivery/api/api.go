@@ -38,8 +38,14 @@ func (a *Api) Run() error {
 
 	// Роутим эндпойнт авторизации
 	authRouter := router.Group("/auth")
-	authRouter.GET("/sign_up", a.h.signUp)
-	authRouter.GET("/sign_in", a.h.signIn)
+	authRouter.POST("/sign_up", a.h.signUp)
+	authRouter.POST("/sign_in", a.h.signIn)
+
+	// Роутим эндпойнт управление профилем пользователя
+	userRouter := router.Group("/user")
+	userRouter.Use(a.UserMiddleware())
+	userRouter.POST("/change_role", a.h.userChangeRole)
+	userRouter.PUT("/", a.h.userUpdateProfile)
 
 	return a.srv.ListenAndServe()
 }

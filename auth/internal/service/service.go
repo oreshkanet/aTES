@@ -10,8 +10,8 @@ import (
 
 type AuthService interface {
 	SignUp(ctx context.Context, user *domain.User) error
-	SignIn(ctx context.Context, user *domain.User) (string, error)
-	ChangeRole(ctx context.Context, user *domain.User) error
+	SignIn(ctx context.Context, publicId string, pwd string) (string, error)
+	ChangeRole(ctx context.Context, publicId string, role string) error
 	UpdateUserProfile(ctx context.Context, user *domain.User) error
 }
 
@@ -20,7 +20,7 @@ type Service struct {
 }
 
 type ConfigService struct {
-	Repos     repository.Repository
+	Repos     *repository.Repository
 	Events    events.Producer
 	AuthToken authorizer.AuthToken
 	HashSalt  string

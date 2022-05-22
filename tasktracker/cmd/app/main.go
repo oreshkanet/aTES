@@ -3,11 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	schemaregistry "github.com/oreshkanet/aTES/event-registry/go/pkg/schema-registry"
 	"github.com/oreshkanet/aTES/tasktracker/internal/app"
 	"github.com/oreshkanet/aTES/tasktracker/internal/config"
-	"github.com/oreshkanet/aTES/tasktracker/pkg/authorizer"
-	"github.com/oreshkanet/aTES/tasktracker/pkg/database"
-	"github.com/oreshkanet/aTES/tasktracker/pkg/mq/kafka"
 	"log"
 	"net/http"
 	"time"
@@ -32,12 +30,17 @@ func main() {
 	defer db.Close()
 
 	// Создаём подключение к брокеру сообщений Kafka
-	mqBroker := kafka.NewBrokerKafka(
+	kafkaBroker := kafka.NewBrokerKafka(
 		fmt.Sprintf("%s:%s", conf.KafkaHost, conf.KafkaPort),
 		10*time.Second,
 		10*time.Second,
 	)
-	defer mqBroker.Close()
+	defer kafkaBroker.Close()
+
+	// Подключаем регистра для схем валидации
+	schemaRegistry := schemaregistry.NewRegistry(conf.SchemaRegistryPath)
+
+	authToken := authorizer.NewJwtToken(conf.SigningKey, 10*time.Minute)
 
 	httpSrv := &http.Server{
 		Addr:         ":" + conf.Port,
@@ -45,17 +48,6 @@ func main() {
 		WriteTimeout: 10 * time.Second,
 	}
 
-	auth := authorizer.NewJwtToken(
-		conf.SigningKey,
-		10*time.Minute,
-	)
-
-	application := app.NewApp()
-	application.Run(ctx,
-		&app.Config{
-			DB:   db,
-			MQ:   mqBroker,
-			HTTP: httpSrv,
-			Auth: auth,
-		})
+	app := app.NewApp(db, kafkaBroker, httpSrv, authToken, schemaRegistry)
+	app.Run(ctx)
 }

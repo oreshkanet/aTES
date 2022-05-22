@@ -2,13 +2,15 @@ package app
 
 import (
 	"context"
+	"github.com/oreshkanet/aTES/event-registry/go/pkg/schema-registry"
+	"github.com/oreshkanet/aTES/packages/pkg/authorizer"
+	"github.com/oreshkanet/aTES/packages/pkg/database"
+	"github.com/oreshkanet/aTES/packages/pkg/transport/mq"
 	"github.com/oreshkanet/aTES/tasktracker/internal/delivery/api"
-	"github.com/oreshkanet/aTES/tasktracker/internal/delivery/events"
+	"github.com/oreshkanet/aTES/tasktracker/internal/delivery/events/consumer"
+	"github.com/oreshkanet/aTES/tasktracker/internal/delivery/events/producer"
 	"github.com/oreshkanet/aTES/tasktracker/internal/repository"
 	"github.com/oreshkanet/aTES/tasktracker/internal/services"
-	"github.com/oreshkanet/aTES/tasktracker/pkg/authorizer"
-	"github.com/oreshkanet/aTES/tasktracker/pkg/database"
-	"github.com/oreshkanet/aTES/tasktracker/pkg/mq"
 	"log"
 	"net/http"
 )
@@ -17,16 +19,28 @@ type App struct {
 }
 
 type Config struct {
-	DB   database.DB
-	MQ   mq.MessageBroker
-	HTTP *http.Server
-	Auth authorizer.AuthToken
+	DB        database.DB
+	MQ        mq.MessageBroker
+	HTTP      *http.Server
+	Auth      authorizer.AuthToken
+	SchemaReg *schemaregistry.EventSchemaRegistry
 }
 
-func NewApp() *App {
-	return &App{}
+func NewApp(
+	db database.DB,
+	mq mq.MessageBroker,
+	http *http.Server,
+	auth authorizer.AuthToken,
+	schemaReg *schemaregistry.EventSchemaRegistry,
+) *App {
+	return &App{
+		DB:        db,
+		MQ:        mq,
+		HTTP:      http,
+		Auth:      auth,
+		SchemaReg: schemaReg,
+	}
 }
-
 func (a *App) Run(ctx context.Context, conf *Config) {
 	// Создаём репозитории приложения
 	appRepos, err := repository.NewRepository(conf.DB)
@@ -36,7 +50,7 @@ func (a *App) Run(ctx context.Context, conf *Config) {
 	}
 
 	// Создаём клиент для публикации нужных событий в брокера сообщений
-	appEventsProducer := events.NewProducer(conf.MQ)
+	appEventsProducer := producer.NewProducer(conf.MQ)
 
 	// Создаём сервисы приложения, выполняющие бизнес-логику
 	appServices := services.NewServices(&services.ConfigService{
@@ -46,11 +60,10 @@ func (a *App) Run(ctx context.Context, conf *Config) {
 	})
 
 	// Создаём консьюминг нужных событий из брокера сообщений
-	appEventsConsumer := events.NewConsumer(appServices.Users)
+	appEventsConsumer := consumer.NewConsumer(appServices.Users)
 
 	// Запускаем консьюминг и паблишинг
-	appEventsProducer.Init(ctx)
-	err = appEventsConsumer.Init(ctx, conf.MQ)
+	err = appEventsProducer.Run(ctx)
 	if err != nil {
 		log.Fatalf("Create events:%s", err)
 		return

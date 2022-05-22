@@ -4,7 +4,7 @@ var (
 	TaskStreamEvent   = "task-stream"
 	TaskAddedEvent    = "task-added"
 	TaskAssignedEvent = "task-assigned"
-	TaskDoneMessage   = "task-done"
+	TaskDoneEvent     = "task-done"
 )
 
 type TaskStreamMessageV1 struct {

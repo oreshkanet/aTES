@@ -48,21 +48,21 @@ func (a *auth) SignUp(ctx context.Context, user *domain.User) error {
 	return nil
 }
 
-func (a *auth) SignIn(ctx context.Context, user *domain.User) (string, error) {
+func (a *auth) SignIn(ctx context.Context, publicId string, pwd string) (string, error) {
 	// Ищем в БД пользователя по имени
-	userDB, err := a.repos.FindUserByPublicId(ctx, user.PublicId)
+	userDB, err := a.repos.FindUserByPublicId(ctx, publicId)
 	if err != nil {
 		return "", err
 	}
 
 	// Проверяем совпадают ли пароли
-	user.Password = a.generatePasswordHash(user.Password)
-	if user.Password != userDB.Password {
+	pwdHash := a.generatePasswordHash(pwd)
+	if pwdHash != userDB.Password {
 		return "", fmt.Errorf("incorrect password")
 	}
 
 	// Генерируем токен доступа JWT
-	token, err := a.authToken.Generate(user.PublicId)
+	token, err := a.authToken.Generate(userDB.PublicId)
 	if err != nil {
 		return "", err
 	}
@@ -77,24 +77,24 @@ func (a *auth) generatePasswordHash(password string) string {
 	return fmt.Sprintf("%x", pwdHash.Sum(nil))
 }
 
-func (a *auth) ChangeRole(ctx context.Context, user *domain.User) error {
+func (a *auth) ChangeRole(ctx context.Context, publicId string, role string) error {
 	// Ищем в БД пользователя по имени
-	userDB, err := a.repos.FindUserByPublicId(ctx, user.PublicId)
+	userDB, err := a.repos.FindUserByPublicId(ctx, publicId)
 	if err != nil {
 		return err
 	}
 
 	// Меняем роль пользователя
-	userDB.Role = user.Role
+	userDB.Role = role
 
 	// Апдейтим в БД
-	err = a.repos.UpdateUser(ctx, user)
+	err = a.repos.UpdateUser(ctx, userDB)
 	if err != nil {
 		return err
 	}
 
 	// Публикуем событие изменения роли пользователя
-	err = a.events.UserRoleChanged(ctx, user)
+	err = a.events.UserRoleChanged(ctx, userDB)
 	if err != nil {
 		return err
 	}
