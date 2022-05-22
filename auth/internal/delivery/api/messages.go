@@ -10,28 +10,60 @@ type ErrorResponse struct {
 	ErrorMsg string `json:"err_msg"`
 }
 
-type SignUpResponse struct {
-	User *domain.User `json:"user"`
-}
-
-type SignInResponse struct {
-	Token string `json:"authorizer,omitempty"`
-}
-
-func newSignInResponse(token string) *SignInResponse {
-	return &SignInResponse{
-		token,
-	}
-}
-
-func newSignUpResponse(user *domain.User) *SignUpResponse {
-	return &SignUpResponse{
-		user,
-	}
-}
-
 func newErrorResponse(err error) *ErrorResponse {
 	return &ErrorResponse{
 		true, fmt.Sprintf("%s", err.Error()),
 	}
+}
+
+type SignUpRequest struct {
+	*domain.User
+}
+
+type SignUpResponse struct {
+	PublicId string `json:"public_id"`
+}
+
+func newSignUpResponse(publicId string) *SignUpResponse {
+	return &SignUpResponse{
+		publicId,
+	}
+}
+
+type SignInRequest struct {
+	PublicId string `json:"public_id"`
+	Password string `json:"password"`
+}
+
+type SignInResponse struct {
+	Token string `json:"token"`
+}
+
+func newSignInResponse(token string) *SignInResponse {
+	return &SignInResponse{token}
+}
+
+type UserUpdateProfileRequest struct {
+	*domain.User
+}
+
+type UserUpdateProfileResponse struct {
+	PublicId string `json:"public_id"`
+}
+
+func newUserUpdateProfileResponse(publicId string) *UserUpdateProfileResponse {
+	return &UserUpdateProfileResponse{publicId}
+}
+
+type UserChangeRoleRequest struct {
+	PublicId string `json:"public_id"`
+	Role     string `json:"role"`
+}
+
+type UserChangeRoleResponse struct {
+	PublicId string `json:"public_id"`
+}
+
+func newUserChangeRoleResponse(publicId string) *UserChangeRoleResponse {
+	return &UserChangeRoleResponse{publicId}
 }

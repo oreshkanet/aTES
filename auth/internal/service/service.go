@@ -10,8 +10,8 @@ import (
 
 type AuthService interface {
 	SignUp(ctx context.Context, user *domain.User) error
-	SignIn(ctx context.Context, user *domain.User) (string, error)
-	ChangeRole(ctx context.Context, user *domain.User) error
+	SignIn(ctx context.Context, publicId string, pwd string) (string, error)
+	ChangeRole(ctx context.Context, publicId string, role string) error
 	UpdateUserProfile(ctx context.Context, user *domain.User) error
 }
 
