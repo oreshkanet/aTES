@@ -34,7 +34,7 @@ func (a *Token) Generate(publicId string) (string, error) {
 	return token.SignedString(a.signingKey)
 }
 
-func (a *Token) ParseToken(accessToken string) (string, error) {
+func (a *Token) ParseToken(accessToken string, claims interface{}) error {
 	token, err := jwt.ParseWithClaims(accessToken, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
@@ -43,12 +43,13 @@ func (a *Token) ParseToken(accessToken string) (string, error) {
 	})
 
 	if err != nil {
-		return "", nil
+		return err
 	}
 
-	if claims, ok := token.Claims.(*Claims); ok && token.Valid {
-		return claims.PublicId, nil
+	var ok bool
+	if claims, ok = token.Claims.(*Claims); ok && token.Valid {
+		return nil
 	}
 
-	return "", fmt.Errorf("invalid access token")
+	return fmt.Errorf("invalid access token")
 }
