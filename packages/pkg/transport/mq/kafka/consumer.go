@@ -9,16 +9,14 @@ import (
 type Consumer struct {
 	*kafka.Conn
 	topic  *mq.Topic
-	valid  mq.Validator
 	msgCh  chan []byte
 	readCh chan interface{}
 }
 
-func newConsumer(conn *kafka.Conn, topic *mq.Topic, valid mq.Validator) *Consumer {
+func newConsumer(conn *kafka.Conn, topic *mq.Topic) *Consumer {
 	return &Consumer{
 		Conn:  conn,
 		topic: topic,
-		valid: valid,
 	}
 }
 
@@ -51,7 +49,7 @@ func (c *Consumer) Run(ctx context.Context) {
 				}
 				msg := b[:n]
 				// Валидируем сообщение
-				err = c.valid.ValidateBytes(msg, c.topic.Domain, c.topic.Event, c.topic.Version)
+				err = c.topic.ValidateBytes(msg)
 				if err != nil {
 					// Пропускаем невалидные сообщения
 					// TODO: Логируем проблемное сообщение
