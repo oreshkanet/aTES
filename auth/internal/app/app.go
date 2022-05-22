@@ -23,7 +23,8 @@ type App struct {
 	HashSalt  string
 }
 
-func NewApp(db database.DB,
+func NewApp(
+	db database.DB,
 	mq mq.MessageBroker,
 	http *http.Server,
 	auth authorizer.AuthToken,

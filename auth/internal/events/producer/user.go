@@ -19,7 +19,7 @@ func (p *Producer) UserCreated(ctx context.Context, user *domain.User) error {
 		traceId,
 		"Created",
 		"1",
-		"auth",
+		"Auth",
 		userMsg,
 	)
 
@@ -42,7 +42,7 @@ func (p *Producer) UserUpdated(ctx context.Context, user *domain.User) error {
 		traceId,
 		"Updated",
 		"1",
-		"auth",
+		"Auth",
 		userMsg,
 	)
 
@@ -64,7 +64,7 @@ func (p *Producer) UserRoleChanged(ctx context.Context, user *domain.User) error
 		traceId,
 		"RoleChanged",
 		"1",
-		"auth",
+		"Auth",
 		userMsg,
 	)
 

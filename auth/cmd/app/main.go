@@ -16,9 +16,9 @@ import (
 )
 
 func main() {
-	conf := config.Load()
-
 	ctx := context.Background()
+
+	conf := config.Load()
 
 	// Создаём подключение к БД
 	dbURL := fmt.Sprintf(
