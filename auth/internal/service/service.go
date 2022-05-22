@@ -20,7 +20,7 @@ type Service struct {
 }
 
 type ConfigService struct {
-	Repos     repository.Repository
+	Repos     *repository.Repository
 	Events    events.Producer
 	AuthToken authorizer.AuthToken
 	HashSalt  string

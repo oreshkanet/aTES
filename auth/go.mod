@@ -26,6 +26,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/oreshkanet/aTES v0.0.0-20220519172613-529e8bb32727 // indirect
 	github.com/oreshkanet/aTES/event-registry/go v0.0.0-20220519172613-529e8bb32727 // indirect
+	github.com/oreshkanet/aTES/packages v0.0.0-20220522064519-056098bdc2b9 // indirect
 	github.com/pierrec/lz4/v4 v4.1.14 // indirect
 	github.com/ugorji/go/codec v1.1.7 // indirect
 	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a // indirect

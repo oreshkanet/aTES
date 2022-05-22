@@ -52,13 +52,6 @@ func main() {
 		WriteTimeout: 10 * time.Second,
 	}
 
-	app := app.NewApp()
-	app.Run(ctx, &app.Config{
-		DB:        db,
-		MQ:        kafkaBroker,
-		HTTP:      httpSrv,
-		Auth:      authToken,
-		SchemaReg: schemaRegistry,
-		HashSalt:  conf.HashSalt,
-	})
+	app := app.NewApp(db, kafkaBroker, httpSrv, authToken, schemaRegistry, conf.HashSalt)
+	app.Run(ctx)
 }

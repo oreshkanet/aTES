@@ -15,9 +15,6 @@ import (
 )
 
 type App struct {
-}
-
-type Config struct {
 	DB        database.DB
 	MQ        mq.MessageBroker
 	HTTP      *http.Server
@@ -26,16 +23,28 @@ type Config struct {
 	HashSalt  string
 }
 
-func NewApp() *App {
-	return &App{}
+func NewApp(db database.DB,
+	mq mq.MessageBroker,
+	http *http.Server,
+	auth authorizer.AuthToken,
+	schemaReg *schemaregistry.EventSchemaRegistry,
+	hashSalt string) *App {
+	return &App{
+		DB:        db,
+		MQ:        mq,
+		HTTP:      http,
+		Auth:      auth,
+		SchemaReg: schemaReg,
+		HashSalt:  hashSalt,
+	}
 }
 
-func (a *App) Run(ctx context.Context, conf *Config) {
+func (a *App) Run(ctx context.Context) {
 	// Создаём репозитории приложения
-	appRepos := repository.NewRepository(conf.DB)
+	appRepos := repository.NewRepository(a.DB)
 
 	// Запускаем продюсера событий
-	appEventsProducer := producer.NewProducer(conf.MQ, conf.SchemaReg)
+	appEventsProducer := producer.NewProducer(a.MQ, a.SchemaReg)
 	if err := appEventsProducer.Run(ctx); err != nil {
 		log.Fatalf("run event producers: %s", err.Error())
 		return
@@ -45,15 +54,15 @@ func (a *App) Run(ctx context.Context, conf *Config) {
 	appServices := service.NewService(&service.ConfigService{
 		Repos:     appRepos,
 		Events:    appEventsProducer,
-		AuthToken: conf.Auth,
-		HashSalt:  conf.HashSalt,
+		AuthToken: a.Auth,
+		HashSalt:  a.HashSalt,
 	})
 
 	// Запускаем API
 	appAPI := api.NewApi(
 		&api.Config{
-			Srv:         conf.HTTP,
-			Auth:        conf.Auth,
+			Srv:         a.HTTP,
+			Auth:        a.Auth,
 			AuthService: appServices.Auth,
 		},
 	)

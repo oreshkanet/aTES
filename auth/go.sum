@@ -264,6 +264,8 @@ github.com/oreshkanet/aTES v0.0.0-20220519172613-529e8bb32727 h1:1w67RdERdx5Qldd
 github.com/oreshkanet/aTES v0.0.0-20220519172613-529e8bb32727/go.mod h1:F+TLugqeknAxOak5pbXmk3/FOFwEKiPSnOJNW7iITyw=
 github.com/oreshkanet/aTES/event-registry/go v0.0.0-20220519172613-529e8bb32727 h1:rSEYO+KCGh4qo7CVTH8VFTkkzyZpAZim0Ea5nkWGSMs=
 github.com/oreshkanet/aTES/event-registry/go v0.0.0-20220519172613-529e8bb32727/go.mod h1:pRwSiZaVPubjLhPrWufJZOKzu8EX/12Ebv97KP3Azk0=
+github.com/oreshkanet/aTES/packages v0.0.0-20220522064519-056098bdc2b9 h1:zBDS3kQBu8LOt0+PATj3OBHT0Ke2+9QxTkpypiKMwUM=
+github.com/oreshkanet/aTES/packages v0.0.0-20220522064519-056098bdc2b9/go.mod h1:HOdACXjOPRSoy83FoeoLJbFDgrNMaofbx1jWrlC4UJ4=
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
 github.com/pelletier/go-toml v1.9.3/go.mod h1:u1nR/EPcESfeI/szUZKdtJ0xRNbUoANCkoOuaOx1Y+c=
 github.com/pierrec/lz4/v4 v4.1.14 h1:+fL8AQEZtz/ijeNnpduH0bROTu0O3NZAlPjQxGn8LwE=
