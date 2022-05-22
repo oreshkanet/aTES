@@ -5,10 +5,10 @@ import (
 	migrate "github.com/rubenv/sql-migrate"
 )
 
-func (r *UserRepository) MigrateUp() error {
+func (r *user) MigrateUp() error {
 	migrations := getMigrations()
 
-	_, err := migrate.Exec(r.db.DB.DB, "mssql", migrations, migrate.Up)
+	err := r.db.MigrateUp(migrations)
 	if err != nil {
 		return fmt.Errorf("migrate DB: %w", err)
 	}
@@ -18,6 +18,6 @@ func (r *UserRepository) MigrateUp() error {
 
 func getMigrations() *migrate.FileMigrationSource {
 	return &migrate.FileMigrationSource{
-		Dir: "repository/migrations/mssql",
+		Dir: "repository/migration/mssql",
 	}
 }

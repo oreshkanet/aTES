@@ -1,4 +1,4 @@
-package configs
+package config
 
 import (
 	"os"
@@ -9,7 +9,9 @@ type Configs struct {
 	SigningKey string
 	HashSalt   string
 
-	MsSqlhost string
+	SchemaRegistryPath string
+
+	MsSqlHost string
 	MsSqlDb   string
 	MsSqlUser string
 	MsSqlPwd  string
@@ -24,7 +26,9 @@ func Load() *Configs {
 		SigningKey: os.Getenv("SIGNING_KEY"),
 		HashSalt:   os.Getenv("HASH_SALT"),
 
-		MsSqlhost: os.Getenv("MSSQL_HOST"),
+		SchemaRegistryPath: os.Getenv("SCHEMA_REGISTRY_PATH"),
+
+		MsSqlHost: os.Getenv("MSSQL_HOST"),
 		MsSqlDb:   os.Getenv("MSSQL_DB"),
 		MsSqlUser: os.Getenv("MSSQL_USER"),
 		MsSqlPwd:  os.Getenv("MSSQL_PWD"),

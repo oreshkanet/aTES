@@ -2,7 +2,7 @@
 CREATE DATABASE [auth]
 
 -- +migrate Up
-IF  NOT EXISTS (SELECT * FROM sys.objects
+IF NOT EXISTS (SELECT * FROM sys.objects
     WHERE object_id = OBJECT_ID(N'[dbo].[users]') AND type in (N'U'))
 
 BEGIN

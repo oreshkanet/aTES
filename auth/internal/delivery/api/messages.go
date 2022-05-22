@@ -1,7 +1,8 @@
-package delivery
+package api
 
 import (
-	"github.com/oreshkanet/aTES/auth/pkg/auth/models"
+	"fmt"
+	"github.com/oreshkanet/aTES/auth/internal/domain"
 )
 
 type ErrorResponse struct {
@@ -10,7 +11,7 @@ type ErrorResponse struct {
 }
 
 type SignUpResponse struct {
-	User *models.User `json:"user"`
+	User *domain.User `json:"user"`
 }
 
 type SignInResponse struct {
@@ -23,14 +24,14 @@ func newSignInResponse(token string) *SignInResponse {
 	}
 }
 
-func newSignUpResponse(user *models.User) *SignUpResponse {
+func newSignUpResponse(user *domain.User) *SignUpResponse {
 	return &SignUpResponse{
 		user,
 	}
 }
 
-func newErrorResponse(errorMessage string) *ErrorResponse {
+func newErrorResponse(err error) *ErrorResponse {
 	return &ErrorResponse{
-		true, errorMessage,
+		true, fmt.Sprintf("%s", err.Error()),
 	}
 }
