@@ -1,4 +1,4 @@
-package services
+package service
 
 import (
 	"context"
@@ -6,7 +6,10 @@ import (
 )
 
 type TasksRepository interface {
-	//FindByPublicId(ctx context.Context, publicId string) (*domain.Task, error)
+	FindTaskByPublicId(ctx context.Context, taskID string) (*domain.Task, error)
+	InsertTask(ctx context.Context, task *domain.Task) error
+	UpdateTask(ctx context.Context, task *domain.Task) error
+	UpdateTaskCost(ctx context.Context, task *domain.Task) error
 }
 
 type TasksEventsProducer interface {

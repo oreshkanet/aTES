@@ -1,4 +1,4 @@
-package events
+package event
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"github.com/oreshkanet/aTES/accounting/internal/domain"
 )
 
-func (p *Producer) TransactStream(ctx context.Context, message *domain.TransactStreamMessage) error {
+func (p *event.Producer) TransactStream(ctx context.Context, message *domain.TransactStreamMessage) error {
 	// TODO: Поработать с контекстом и сделать тайм-аут или вообще сделать асинхронную отправку через горутину
 	msg, err := json.Marshal(message)
 	if err != nil {
@@ -17,7 +17,7 @@ func (p *Producer) TransactStream(ctx context.Context, message *domain.TransactS
 	return err
 }
 
-func (p *Producer) TransactPayment(ctx context.Context, message *domain.TransactPaymentMessage) error {
+func (p *event.Producer) TransactPayment(ctx context.Context, message *domain.TransactPaymentMessage) error {
 	// TODO: Поработать с контекстом и сделать тайм-аут или вообще сделать асинхронную отправку через горутину
 	msg, err := json.Marshal(message)
 	if err != nil {

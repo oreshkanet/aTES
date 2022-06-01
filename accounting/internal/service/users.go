@@ -1,4 +1,4 @@
-package services
+package service
 
 import (
 	"context"
@@ -6,6 +6,7 @@ import (
 )
 
 type UsersRepository interface {
+	FindUserByPublicId(ctx context.Context, userID string) (*domain.User, error)
 	CreateOrUpdateUser(ctx context.Context, user *domain.User) error
 }
 
