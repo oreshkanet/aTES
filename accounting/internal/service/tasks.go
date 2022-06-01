@@ -55,6 +55,24 @@ func (s *Tasks) AddTask(ctx context.Context, publicId string) error {
 	return nil
 }
 
+func (s *Tasks) AssignTask(ctx context.Context, publicId string, userPublicId string) error {
+	// TODO: Поиск задачи в БД по publicId
+	// TODO: Если в БД задачи ещё нет, то расценим её и запишем в базу
+
+	// s.costCalculationTask(ctx, task)
+
+	return nil
+}
+
+func (s *Tasks) DoneTask(ctx context.Context, publicId string) error {
+	// TODO: Поиск задачи в БД по publicId
+	// TODO: Если у задача назначена, то списываем со счета
+
+	// s.costCalculationTask(ctx, task)
+
+	return nil
+}
+
 func (s *Tasks) costCalculationTask(ctx context.Context, task *domain.Task) error {
 	// TODO: Расценить задачу
 	// task.AssignCost
