@@ -2,10 +2,11 @@ package app
 
 import (
 	"context"
+	event2 "github.com/oreshkanet/aTES/accounting/internal/clent/event"
 	"github.com/oreshkanet/aTES/accounting/internal/delivery/api"
-	"github.com/oreshkanet/aTES/accounting/internal/delivery/events"
+	"github.com/oreshkanet/aTES/accounting/internal/delivery/event"
 	"github.com/oreshkanet/aTES/accounting/internal/repository"
-	"github.com/oreshkanet/aTES/accounting/internal/services"
+	"github.com/oreshkanet/aTES/accounting/internal/service"
 	"github.com/oreshkanet/aTES/accounting/internal/transport/mq"
 	"github.com/oreshkanet/aTES/tasktracker/pkg/authorizer"
 	"github.com/oreshkanet/aTES/tasktracker/pkg/database"
@@ -36,17 +37,17 @@ func (a *App) Run(ctx context.Context, conf *Config) {
 	}
 
 	// Создаём клиент для публикации нужных событий в брокера сообщений
-	appEventsProducer := events.NewProducer(conf.MQ)
+	appEventsProducer := event2.NewProducer(conf.MQ)
 
 	// Создаём сервисы приложения, выполняющие бизнес-логику
-	appServices := services.NewServices(&services.ConfigService{
+	appServices := service.NewServices(&service.ConfigService{
 		AccProducer: appEventsProducer,
 		ReposUsers:  appRepos.Users,
 		ReposTasks:  appRepos.Tasks,
 	})
 
 	// Создаём консьюминг нужных событий из брокера сообщений
-	appEventsConsumer := events.NewConsumer(
+	appEventsConsumer := event.NewConsumer(
 		appServices.Users,
 		appServices.Tasks,
 		appServices.Account,
@@ -56,7 +57,7 @@ func (a *App) Run(ctx context.Context, conf *Config) {
 	appEventsProducer.Init(ctx)
 	err = appEventsConsumer.Init(ctx, conf.MQ)
 	if err != nil {
-		log.Fatalf("Create events:%s", err)
+		log.Fatalf("Create event:%s", err)
 		return
 	}
 

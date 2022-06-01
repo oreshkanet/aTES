@@ -1,5 +1,5 @@
 // Package service service - Имплементация бизнес-логики приложения
-package services
+package service
 
 import (
 	"context"

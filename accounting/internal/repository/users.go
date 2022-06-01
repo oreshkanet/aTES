@@ -3,45 +3,30 @@ package repository
 import (
 	"context"
 	"github.com/oreshkanet/aTES/accounting/internal/domain"
-	"github.com/oreshkanet/aTES/tasktracker/pkg/database"
-	migrate "github.com/rubenv/sql-migrate"
+	"github.com/oreshkanet/aTES/packages/pkg/database"
 )
 
 type UsersRepository struct {
 	db database.DB
 }
 
-func NewUsersRepository(db database.DB) (*UsersRepository, error) {
-	repos := &UsersRepository{
+func NewUsersRepository(db database.DB) *UsersRepository {
+	return &UsersRepository{
 		db: db,
-	}
-
-	if err := db.MigrateUp(repos.getMigrations()); err != nil {
-		return nil, err
-	}
-	return repos, nil
-}
-
-func (r *UsersRepository) getMigrations() *migrate.MemoryMigrationSource {
-	// FIXME: пофиксить создание автоинкрементного primary key, а ещё и уникальный индекс
-	return &migrate.MemoryMigrationSource{
-		Migrations: []*migrate.Migration{
-			&migrate.Migration{
-				Id:   "1",
-				Up:   []string{"CREATE TABLE [users] ([id] int, [public_id] varchar(40), [name] varchar(250), [role] varchar(50))"},
-				Down: []string{"DROP TABLE [users]"},
-			},
-		},
 	}
 }
 
 func (r *UsersRepository) FindUserByPublicId(ctx context.Context, userID string) (*domain.User, error) {
 	user := &domain.User{}
 	query := `
-		SELECT [id], [public_id], [name], [role] FROM [users] WHERE [public_id] = @PublicId
+	SELECT
+		[id], [public_id], [name], [role], [balance]
+	FROM 
+		[dbo].[users]
+	WHERE [public_id] = @PublicId
 	`
 
-	if err := r.db.Select(ctx, user, query, database.DBParam{Name: "publicId", Value: userID}); err != nil {
+	if err := r.db.Select(ctx, user, query, database.DBParam{Name: "PublicId", Value: userID}); err != nil {
 		return &domain.User{}, err
 	}
 
@@ -61,9 +46,9 @@ func (r *UsersRepository) CreateOrUpdateUser(ctx context.Context, user *domain.U
 	ELSE
 		BEGIN
 			INSERT INTO [users]
-				([public_id], [name], [role])
+				([public_id], [name], [role], [balance])
 			VALUES
-				(@PublicId, @Name, @Role)
+				(@PublicId, @Name, @Role, 0)
 		END
 	`
 

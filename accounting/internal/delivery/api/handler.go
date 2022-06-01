@@ -3,15 +3,15 @@ package api
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/oreshkanet/aTES/accounting/internal/services"
+	"github.com/oreshkanet/aTES/accounting/internal/service"
 	"net/http"
 )
 
 type Handler struct {
-	accService services.AccountService
+	accService service.AccountService
 }
 
-func NewHandler(service services.AccountService) *Handler {
+func NewHandler(service service.AccountService) *Handler {
 	return &Handler{accService: service}
 }
 

@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  "title": "Accounting.Payment-stream.v1",
+  "description": "json schema для событий выплаты заработанных денег (version 1)",
+
+  "definitions": {
+    "user_stream_v1": {
+      "type": "object",
+      "properties": {
+        "public_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "role": {
+          "enum": ["admin", "manager", "employee", "accountant"]
+        }
+      },
+      "required": [
+        "public_id",
+        "name",
+        "role"
+      ]
+    },
+    "event_data": {
+      "type": "object",
+      "properties": {
+        "public_id": {
+          "type": "string"
+        },
+        "dt": {
+          "type": "string"
+        },
+        "user": { "$ref": "#/definitions/user_stream_v1" },
+        "amount": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "public_id",
+        "dt",
+        "user",
+        "amount"
+      ]
+    }
+  },
+
+  "type": "object",
+
+  "properties": {
+    "trace_id":      { "type": "string" },
+    "event_id":      { "type": "string" },
+    "event_version": { "enum": [1] },
+    "event_name":    { "type": "string" },
+    "event_time":    { "type": "string" },
+    "producer":      { "type": "string" },
+
+    "data": { "$ref": "#/definitions/event_data" }
+  },
+
+  "required": [
+    "trace_id",
+    "event_id",
+    "event_version",
+    "event_name",
+    "event_time",
+    "producer",
+    "data"
+  ]
+}

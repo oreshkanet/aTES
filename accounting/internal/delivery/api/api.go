@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/oreshkanet/aTES/accounting/internal/services"
+	"github.com/oreshkanet/aTES/accounting/internal/service"
 	"github.com/oreshkanet/aTES/tasktracker/pkg/authorizer"
 	"net/http"
 )
@@ -16,7 +16,7 @@ type Api struct {
 type Config struct {
 	Srv        *http.Server
 	Auth       authorizer.AuthToken
-	AccService services.AccountService
+	AccService service.AccountService
 }
 
 func NewApi(config *Config) *Api {

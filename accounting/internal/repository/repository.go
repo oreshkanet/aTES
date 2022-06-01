@@ -1,28 +1,15 @@
 package repository
 
-import "github.com/oreshkanet/aTES/tasktracker/pkg/database"
+import "github.com/oreshkanet/aTES/packages/pkg/database"
 
 type Repository struct {
 	Users *UsersRepository
 	Tasks *TasksRepository
 }
 
-func NewRepository(db database.DB) (*Repository, error) {
-	var err error
-	reposUser, err := NewUsersRepository(db)
-	if err != nil {
-		return nil, err
+func NewRepository(db database.DB) *Repository {
+	return &Repository{
+		Users: NewUsersRepository(db),
+		Tasks: NewTasksRepository(db),
 	}
-
-	reposTasks, err := NewTasksRepository(db)
-	if err != nil {
-		return nil, err
-	}
-
-	repos := &Repository{
-		Users: reposUser,
-		Tasks: reposTasks,
-	}
-
-	return repos, nil
 }
