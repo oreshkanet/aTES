@@ -12,14 +12,14 @@ import (
 
 type auth struct {
 	repos     repository.UserRepository
-	events    event.Producer
+	events    event.EventsProducer
 	authToken authorizer.AuthToken
 	hashSalt  string
 }
 
 func newAuth(
 	repos repository.UserRepository,
-	events event.Producer,
+	events event.EventsProducer,
 	authToken authorizer.AuthToken,
 	hashSalt string,
 ) *auth {

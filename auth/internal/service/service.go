@@ -21,7 +21,7 @@ type Service struct {
 
 type ConfigService struct {
 	Repos     *repository.Repository
-	Events    event.Producer
+	Events    *event.Producer
 	AuthToken authorizer.AuthToken
 	HashSalt  string
 }
