@@ -15,11 +15,13 @@ type TasksService interface {
 	CreateTask(ctx context.Context, task *domain.Task) error
 	UpdateTask(ctx context.Context, task *domain.Task) error
 	AddTask(ctx context.Context, publicId string) error
+	AssignTask(ctx context.Context, publicId string, userPublicId string) error
+	DoneTask(ctx context.Context, publicId string) error
 }
 
 type AccountService interface {
-	DoneTask(ctx context.Context, taskPublicId string, userPublicId string) error
-	AssignTasks(ctx context.Context, taskPublicId string, userPublicId string) error
+	OpenTransaction(ctx context.Context, taskPublicId string, userPublicId string) error
+	Payment(ctx context.Context, taskPublicId string, userPublicId string) error
 	GetBalance(ctx context.Context, userPublicId string) (float32, error)
 }
 
