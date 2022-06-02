@@ -33,7 +33,9 @@
         "dt": {
           "type": "string"
         },
-        "user": { "$ref": "#/definitions/user_stream_v1" },
+        "user_public_id": {
+          "type": "string"
+        },
         "amount": {
           "type": "number"
         }
@@ -41,7 +43,7 @@
       "required": [
         "public_id",
         "dt",
-        "user",
+        "user_public_id",
         "amount"
       ]
     }
