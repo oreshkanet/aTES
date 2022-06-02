@@ -2,8 +2,8 @@ package app
 
 import (
 	"context"
+	"github.com/oreshkanet/aTES/auth/internal/client/event/producer"
 	"github.com/oreshkanet/aTES/auth/internal/delivery/api"
-	"github.com/oreshkanet/aTES/auth/internal/events/producer"
 	"github.com/oreshkanet/aTES/auth/internal/repository"
 	"github.com/oreshkanet/aTES/auth/internal/service"
 	"github.com/oreshkanet/aTES/event-registry/go/pkg/schema-registry"
@@ -72,4 +72,16 @@ func (a *App) Run(ctx context.Context) {
 			log.Fatalf("Failed to start API: %+v", err)
 		}
 	}()
+}
+
+func (a *App) Stop(ctx context.Context) error {
+	if err := a.HTTP.Shutdown(ctx); err != nil {
+		return err
+	}
+
+	// TODO: разделить закрытие паблишеров и консьюмеров
+	//      и таймаут, чтобы дать возможность отработать запущенные задачи
+	a.MQ.Close()
+
+	return nil
 }

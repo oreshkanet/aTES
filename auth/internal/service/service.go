@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
+	"github.com/oreshkanet/aTES/auth/internal/client/event"
 	"github.com/oreshkanet/aTES/auth/internal/domain"
-	"github.com/oreshkanet/aTES/auth/internal/events"
 	"github.com/oreshkanet/aTES/auth/internal/repository"
 	"github.com/oreshkanet/aTES/packages/pkg/authorizer"
 )
@@ -21,7 +21,7 @@ type Service struct {
 
 type ConfigService struct {
 	Repos     *repository.Repository
-	Events    events.Producer
+	Events    event.Producer
 	AuthToken authorizer.AuthToken
 	HashSalt  string
 }

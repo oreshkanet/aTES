@@ -4,22 +4,22 @@ import (
 	"context"
 	"crypto/sha1"
 	"fmt"
+	"github.com/oreshkanet/aTES/auth/internal/client/event"
 	"github.com/oreshkanet/aTES/auth/internal/domain"
-	"github.com/oreshkanet/aTES/auth/internal/events"
 	"github.com/oreshkanet/aTES/auth/internal/repository"
 	"github.com/oreshkanet/aTES/packages/pkg/authorizer"
 )
 
 type auth struct {
 	repos     repository.UserRepository
-	events    events.Producer
+	events    event.Producer
 	authToken authorizer.AuthToken
 	hashSalt  string
 }
 
 func newAuth(
 	repos repository.UserRepository,
-	events events.Producer,
+	events event.Producer,
 	authToken authorizer.AuthToken,
 	hashSalt string,
 ) *auth {

@@ -1,7 +1,5 @@
 package database
 
-//TODO: перевезти в отдельный пакет packages
-
 import (
 	"context"
 	migrate "github.com/rubenv/sql-migrate"
