@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	schemaregistry "github.com/oreshkanet/aTES/event-registry/go/pkg/schema-registry"
 	"golang.org/x/sync/errgroup"
 	"net/http"
 	"os"
@@ -13,7 +14,6 @@ import (
 
 	"github.com/oreshkanet/aTES/auth/internal/app"
 	"github.com/oreshkanet/aTES/auth/internal/config"
-	"github.com/oreshkanet/aTES/event-registry/go/pkg/schema-registry"
 	"github.com/oreshkanet/aTES/packages/pkg/authorizer/jwt"
 	"github.com/oreshkanet/aTES/packages/pkg/database/mssql"
 	"github.com/oreshkanet/aTES/packages/pkg/transport/mq/kafka"
