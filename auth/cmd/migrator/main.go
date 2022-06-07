@@ -18,9 +18,9 @@ func run(ctx context.Context) error {
 
 	// Создаём подключение к БД
 	dbURL := fmt.Sprintf(
-		"sqlserver://%s:%s@%s",
+		"sqlserver://%s:%s@%s?database=%s",
 		conf.MsSqlUser, conf.MsSqlPwd,
-		conf.MsSqlHost,
+		conf.MsSqlHost, "master",
 	)
 
 	db, err := mssql.NewDBMsSQL(ctx, dbURL)
