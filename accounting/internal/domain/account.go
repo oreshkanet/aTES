@@ -15,14 +15,15 @@ type Transaction struct {
 	TaskPublicId string
 	Credit       float32 `db:"credit"`
 	Debit        float32 `db:"debit"`
-	Comment      string  `db:"comment"`
+	Status       uint8   `db:"status"`
 }
 
 type Payment struct {
-	Id       int       `db:"id"`
-	Dt       time.Time `db:"dt"`
-	PublicId string    `db:"public_id"`
-	UserId   string    `db:"user_id"`
-	Amount   float32   `db:"amount"`
-	Status   uint8     `db:"status"`
+	Id           int       `db:"id"`
+	Dt           time.Time `db:"dt"`
+	PublicId     string    `db:"public_id"`
+	UserId       string    `db:"user_id"`
+	UserPublicId string
+	Amount       float32 `db:"amount"`
+	Status       uint8   `db:"status"`
 }

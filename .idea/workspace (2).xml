@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8984b129-6f73-4e8d-9e8a-db5c8b8a7b1b" name="Changes" comment="User Migrations">
+      <change afterPath="$PROJECT_DIR$/tasktracker/internal/models/tasks.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tasktracker/internal/repository/tasks.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tasktracker/internal/services/tasks.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tasktracker/internal/transport/task.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasktracker/cmd/app/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/tasktracker/cmd/app/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasktracker/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/tasktracker/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasktracker/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/tasktracker/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasktracker/internal/configs/configs.go" beforeDir="false" afterPath="$PROJECT_DIR$/tasktracker/internal/configs/configs.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasktracker/internal/models/users.go" beforeDir="false" afterPath="$PROJECT_DIR$/tasktracker/internal/models/users.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasktracker/internal/repository/users.go" beforeDir="false" afterPath="$PROJECT_DIR$/tasktracker/internal/repository/users.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasktracker/internal/services/users.go" beforeDir="false" afterPath="$PROJECT_DIR$/tasktracker/internal/services/users.go" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="OpenAPI" />
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" url="file:///usr/local/go" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="28kRJohuiKMau3sLzjjEBH67j7E" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.format.on.save.advertiser.fired" value="true" />
+    <property name="go.formatter.settings.were.checked" value="true" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="go.modules.go.list.on.any.changes.was.set" value="true" />
+    <property name="go.watchers.conflict.with.on.save.actions.check.performed" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$" />
+    <property name="settings.editor.selected.configurable" value="go.vgo" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/tasktracker/internal/transport" />
+      <recent name="$PROJECT_DIR$/tasktracker/pkg" />
+      <recent name="$PROJECT_DIR$/tasktracker/internal/configs" />
+      <recent name="$PROJECT_DIR$/auth/cmd/api" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/tasktracker/pkg/queues" />
+      <recent name="$PROJECT_DIR$/auth/pkg/queues/kafka" />
+      <recent name="$PROJECT_DIR$/tasktracker/pkg/queues/kafka" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Go Build.go build github.com/oreshkanet/aTES/cmd/api">
+    <configuration name="go build github.com/oreshkanet/aTES/cmd/api" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="aTES" />
+      <working_directory value="$PROJECT_DIR$" />
+      <envs>
+        <env name="GOARCH" value="arm64" />
+      </envs>
+      <kind value="PACKAGE" />
+      <package value="github.com/oreshkanet/aTES/cmd/api" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="SwaggerCodegen">
+      <option name="activeConfigurationType" value="FILE" />
+      <option name="configurationPath" value="" />
+      <option name="customJreEnabled" value="false" />
+      <option name="customTemplatesPath" value="" />
+      <option name="enableDebugLogging" value="false" />
+      <option name="generateToPath" value="$PROJECT_DIR$/gen" />
+      <option name="generationParameters">
+        <list />
+      </option>
+      <option name="generatorPath" value="https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/5.0.0/openapi-generator-cli-5.0.0.jar" />
+      <option name="jdkPath" value="Default" />
+      <option name="language" value="java" />
+      <option name="specificationPath" value="$PROJECT_DIR$/open-api.yaml" />
+      <method v="2" />
+    </configuration>
+    <configuration name="open-api.yaml" type="SwaggerCodegen" temporary="true">
+      <option name="activeConfigurationType" value="FILE" />
+      <option name="configurationPath" value="" />
+      <option name="customJreEnabled" value="false" />
+      <option name="customTemplatesPath" value="" />
+      <option name="enableDebugLogging" value="false" />
+      <option name="generateToPath" value="$PROJECT_DIR$/gen" />
+      <option name="generationParameters">
+        <list />
+      </option>
+      <option name="generatorPath" value="https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/5.0.0/openapi-generator-cli-5.0.0.jar" />
+      <option name="jdkPath" value="Default" />
+      <option name="language" value="java" />
+      <option name="specificationPath" value="$PROJECT_DIR$/open-api.yaml" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Go Build.go build github.com/oreshkanet/aTES/cmd/api" />
+      <item itemvalue="Swagger Codegen.open-api.yaml" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Swagger Codegen.open-api.yaml" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="AuthService" />
+    <MESSAGE value="migrateUP" />
+    <MESSAGE value="tasktraker app" />
+    <MESSAGE value="Database package" />
+    <MESSAGE value="User repository" />
+    <MESSAGE value="kafka packages" />
+    <MESSAGE value="users transport" />
+    <MESSAGE value="Users service" />
+    <MESSAGE value="User Migrations" />
+    <option name="LAST_COMMIT_MESSAGE" value="User Migrations" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="GoApplicationRunConfiguration">
+        <watch expression="[]byte(&quot;a001c3a244ac1f9d1cc9a197cc12f9fa&quot;)" language="go" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>
