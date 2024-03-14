@@ -2,7 +2,7 @@ package app
 
 import (
 	"context"
-	"github.com/oreshkanet/aTES/auth/internal/client/event/producer"
+	"github.com/oreshkanet/aTES/auth/internal/client/event"
 	"github.com/oreshkanet/aTES/auth/internal/delivery/api"
 	"github.com/oreshkanet/aTES/auth/internal/repository"
 	"github.com/oreshkanet/aTES/auth/internal/service"
@@ -45,7 +45,7 @@ func (a *App) Run(ctx context.Context) {
 	appRepos := repository.NewRepository(a.DB)
 
 	// Запускаем продюсера событий
-	appEventsProducer := producer.NewProducer(a.MQ, a.SchemaReg)
+	appEventsProducer := event.NewProducer(a.MQ, a.SchemaReg)
 	if err := appEventsProducer.Run(ctx); err != nil {
 		log.Fatalf("run event producers: %s", err.Error())
 		return

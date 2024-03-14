@@ -44,7 +44,7 @@ IF  NOT EXISTS (SELECT * FROM sys.objects
                                        [task_id] INT NOT NULL,
                                        [credit] NUMERIC(10, 2) NOT NULL,
                                        [debit] NUMERIC(10, 2) NOT NULL,
-                                       [comment] VARCHAR(512) NULL,
+                                       [status] INT NOT NULL,
         );
 
         CREATE UNIQUE INDEX ix_transactions_publicId ON [dbo].[transactions] ([public_id] ASC);

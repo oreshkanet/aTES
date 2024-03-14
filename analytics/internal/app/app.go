@@ -52,7 +52,7 @@ func (a *App) Run(ctx context.Context, conf *Config) {
 	// Запускаем консьюминг и паблишинг
 	err = appEventsConsumer.Init(ctx, conf.MQ)
 	if err != nil {
-		log.Fatalf("Create events:%s", err)
+		log.Fatalf("Create event:%s", err)
 		return
 	}
 

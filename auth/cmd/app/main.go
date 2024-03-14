@@ -4,9 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/oreshkanet/aTES/auth/internal/app"
-	"github.com/oreshkanet/aTES/event-registry/go/pkg/schema-registry"
-	"github.com/oreshkanet/aTES/packages/pkg/authorizer"
+	schemaregistry "github.com/oreshkanet/aTES/event-registry/go/pkg/schema-registry"
 	"golang.org/x/sync/errgroup"
 	"net/http"
 	"os"
@@ -14,8 +12,10 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/oreshkanet/aTES/auth/internal/app"
 	"github.com/oreshkanet/aTES/auth/internal/config"
-	"github.com/oreshkanet/aTES/packages/pkg/database"
+	"github.com/oreshkanet/aTES/packages/pkg/authorizer/jwt"
+	"github.com/oreshkanet/aTES/packages/pkg/database/mssql"
 	"github.com/oreshkanet/aTES/packages/pkg/transport/mq/kafka"
 )
 
@@ -28,13 +28,13 @@ func run(ctx context.Context) error {
 		conf.MsSqlUser, conf.MsSqlPwd,
 		conf.MsSqlHost, conf.MsSqlDb,
 	)
-	db, err := database.NewDBMsSQL(ctx, dbURL)
+	db, err := mssql.NewDBMsSQL(ctx, dbURL)
 	if err != nil {
 		return err
 	}
 
 	// Поднимаем подключение к Кафке
-	kafkaBroker := kafka.NewBrokerKafka(
+	kafkaBroker := kafka.NewBroker(
 		fmt.Sprintf("%s:%s", conf.KafkaHost, conf.KafkaPort),
 		3*time.Second,
 		3*time.Second,
@@ -44,7 +44,7 @@ func run(ctx context.Context) error {
 	schemaRegistry := schemaregistry.NewRegistry(conf.SchemaRegistryPath)
 
 	// Авторизатор сервисов SSO
-	authToken := authorizer.NewJwtToken(conf.SigningKey, 10*time.Minute)
+	authToken := jwt.NewJwtToken(conf.SigningKey, 10*time.Minute)
 
 	// HTTP-сервер
 	httpSrv := &http.Server{
